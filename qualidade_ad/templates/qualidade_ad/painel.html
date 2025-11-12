@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }}</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; background-color: #f4f7f6; }
+        .container { max-width: 900px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .btn { display: block; width: 100%; background-color: #007bff; color: white; padding: 15px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s; margin-bottom: 15px; }
+        .btn:hover { background-color: #0056b3; }
+        .btn-secondary { background-color: #6c757d; }
+        .btn-secondary:hover { background-color: #5a6268; }
+        .messages { list-style: none; padding: 0; }
+        .messages .success { border: 1px solid #155724; background-color: #d4edda; color: #155724; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        .execucao { border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
+        .execucao-header { background-color: #f9f9f9; padding: 10px 15px; border-bottom: 1px solid #ddd; font-size: 0.9em; }
+        .execucao-body { padding: 15px; }
+        .lista-logs { font-size: 0.9em; color: #333; list-style-type: none; padding-left: 0; }
+        .log-item { margin-bottom: 12px; }
+        .status-sucesso { color: #28a745; font-weight: bold; }
+        .status-falhou { color: #dc3545; font-weight: bold; }
+        .status-em-progresso { color: #007bff; font-weight: bold; }
+        .log-resumo { font-family: monospace; background: #eee; padding: 8px; font-size: 0.85em; margin-top: 5px; border-radius: 3px; white-space: pre-wrap; overflow-wrap: break-word; }
+        .nav-link { margin-top: 20px; font-size: 1.1em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ titulo }}</h1>
+        <hr>
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <h3>Ações do Pipeline de Carga</h3>
+        <p>Execute o pipeline para carregar ou atualizar os dados do AD no banco.</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" name="acao_pipeline_completo" class="btn">
+                1. Pipeline Completo (Extrair do AD)
+            </button>
+            <button type="submit" name="acao_importar_arquivos" class="btn btn-secondary">
+                2. Importar de Arquivos Locais (temp_data)
+            </button>
+        </form>
+
+        <hr style="margin-top: 30px;">
+        
+        <h2>Histórico de Execuções do Pipeline (Carga)</h2>
+        {% for execucao in ultimas_execucoes %}
+            <div class="execucao">
+                <div class="execucao-header">
+                    <strong>Execução #{{ execucao.id }}</strong> - 
+                    Iniciada em: {{ execucao.timestamp_inicio }} - 
+                    Status: 
+                    <strong class="{% if execucao.status == 'CONCLUIDO' %}status-sucesso{% elif execucao.status == 'FALHOU' %}status-falhou{% else %}status-em-progresso{% endif %}">
+                        {{ execucao.get_status_display }}
+                    </strong>
+                </div>
+                <div class="execucao-body">
+                    <p><strong>Relatório das Etapas:</strong></p>
+                    <ul class="lista-logs">
+                        {% for log in execucao.logs_etapas.all %}
+                            <li class="log-item">
+                                <strong>{{ log.get_etapa_nome_display }}:</strong>
+                                <span class="{% if log.status == 'SUCESSO' %}status-sucesso{% else %}status-falhou{% endif %}">
+                                    [{{ log.get_status_display }}]
+                                </span>
+                                <small>(Duração: {{ log.timestamp_fim|timesince:log.timestamp_inicio }})</small>
+                                <p class="log-resumo">
+                                    {{ log.resumo_execucao|truncatechars:300 }}
+                                </p>
+                            </li>
+                        {% empty %}
+                            <li>Logs das etapas ainda não disponíveis...</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% empty %}
+            <p>Nenhuma execução registrada ainda.</p>
+        {% endfor %}
+        
+        <hr style="margin-top: 40px;">
+        <div class="nav-link">
+            <p><a href="{% url 'dashboard_analises' %}">Ir para o Dashboard de Análises</a></p>
+            <p><a href="/admin/">Acessar Área Administrativa</a></p>
+        </div>
+    </div>
+</body>
+</html>

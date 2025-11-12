@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }}</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; background-color: #f4f7f6; }
+        .container { max-width: 900px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .bloco-acoes { }
+        .btn { display: block; width: 100%; color: white; padding: 15px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s; margin-bottom: 15px; }
+        .btn:hover { background-color: #218838; }
+        .messages { list-style: none; padding: 0; }
+        .messages .success { border: 1px solid #155724; background-color: #d4edda; color: #155724; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        .execucao-header { background-color: #f9f9f9; padding: 10px 15px; border-bottom: 1px solid #ddd; font-size: 0.9em; }
+        .execucao-body { padding: 15px; }
+        .relatorio-metricas { background-color: #fdfdfd; border: 1px solid #eee; padding: 15px; border-radius: 5px; margin-bottom: 15px; }
+        .relatorio-metricas ul { padding-left: 20px; margin: 0; }
+        .nav-link { margin-top: 20px; font-size: 1.1em; }
+        
+        /* Estilos dos botões */
+        .btn-success { background-color: #28a745; } /* Verde para Análise Simples */
+        .btn-info { background-color: #17a2b8; }    /* Azul para Análise Geral */
+        .btn-info:hover { background-color: #117a8b; }
+        .btn-secondary { background-color: #6c757d; }
+        .btn-secondary:hover { background-color: #5a6268; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ titulo }}</h1>
+        <hr>
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <div class="grid">
+            <div class="bloco-acoes">
+                <h3>Análises Específicas (Produção)</h3>
+                <p>Calcula métricas de negócio sobre os dados de produção limpos.</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="acao_analise_completude_usuarios" class="btn btn-success">
+                        Analisar Completude (Usuários)
+                    </button>
+                    </form>
+            </div>
+            
+            <div class="bloco-acoes">
+                <h3>Análises Gerais (Staging)</h3>
+                <p>Calcula a completude geral (DAMA) dos dados brutos nas tabelas de staging.</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="acao_analise_completude_geral" class="btn btn-info">
+                        Análise Geral de Células (Staging)
+                    </button>
+                    </form>
+            </div>
+        </div>
+
+        <hr style="margin-top: 30px;">
+        
+        <h2>Histórico de Análise Geral (Staging)</h2>
+
+        {% for relatorio in ultimos_relatorios_gerais %}
+            <a href="{% url 'detalhe_relatorio_geral' pk=relatorio.id %}" style="text-decoration: none; color: inherit;">
+                <div class="relatorio-metricas">
+                    <div class="execucao-header">
+                        <strong>Relatório Geral para: {{ relatorio.tabela_analisada }}</strong><br>
+                        Executado em: {{ relatorio.timestamp_inicio }}
+                    </div>
+                    <div class="execucao-body">
+                        <ul>
+                            <li>
+                                <strong>Completude Geral (DAMA):</strong>
+                                <span class="{% if relatorio.percentual_completude_geral > 90 %}status-sucesso{% else %}status-falhou{% endif %}" style="font-size: 1.1em;">
+                                    {{ relatorio.percentual_completude_geral|floatformat:2 }}%
+                                </span>
+                            </li>
+                            <li><strong>Colunas com Dados Faltando:</strong> {{ relatorio.relatorio_colunas_vazias.keys|length }}</li>
+                        </ul>
+                        <small style="color: #007bff;">Clique para ver o relatório detalhado...</small>
+                    </div>
+                </div>
+            </a>
+        {% empty %}
+            <p>Nenhum relatório de análise geral gerado ainda.</p>
+        {% endfor %}
+
+        <hr style="margin-top: 30px;">
+
+        <h2>Histórico de Análise Específica (Produção)</h2>
+        {% for relatorio in ultimos_relatorios_usuarios %}
+            <div class="relatorio-metricas">
+                </div>
+        {% empty %}
+            <p>Nenhum relatório de análise específica gerado ainda.</p>
+        {% endfor %}
+
+        <hr style="margin-top: 40px;">
+        <div class="nav-link">
+            <p><a href="{% url 'painel_de_controle' %}">Ir para o Painel de Carga (ETL)</a></p>
+            <p><a href="/admin/">Acessar Área Administrativa</a></p>
+        </div>
+    </div>
+</body>
+</html>

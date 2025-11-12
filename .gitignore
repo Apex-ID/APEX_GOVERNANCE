@@ -1,0 +1,16 @@
+# Ambiente Virtual
+apexvirtual/
+
+# Arquivos de configuração
+.env
+
+# Dados temporários
+temp_data/
+*.csv
+*.txt
+
+# Cache do Python
+__pycache__/
+*.pyc
+
+*csv

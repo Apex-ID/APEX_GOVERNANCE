@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ titulo }}</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; }
+        .container { max-width: 800px; margin: 20px auto; }
+        h1, h2 { border-bottom: 2px solid #eee; padding-bottom: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f9f9f9; }
+        .destaque { font-size: 1.2em; font-weight: bold; color: #0056b3; }
+        
+        /* Estilos para Impressão (Baixar PDF) */
+        @media print {
+            body { margin: 1cm; }
+            .no-print { display: none; } /* Esconde o link de "voltar" */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'dashboard_analises' %}" class="no-print">&larr; Voltar ao Dashboard</a>
+
+        <h1>{{ titulo }}</h1>
+        <p>Relatório de Completude Geral (DAMA) executado em {{ relatorio.timestamp_inicio }}</p>
+
+        <h2>Resumo da Execução</h2>
+        <ul>
+            <li><strong>Tabela Analisada:</strong> {{ relatorio.tabela_analisada }}</li>
+            <li><strong>Duração do Processamento:</strong> {{ relatorio.duracao_processamento }}</li>
+            <li><strong>Completude Geral (DAMA):</strong> <span class="destaque">{{ relatorio.percentual_completude_geral|floatformat:2 }}%</span></li>
+            <li><strong>Total de Células Preenchidas:</strong> {{ relatorio.total_celulas_preenchidas }} / {{ relatorio.total_celulas }}</li>
+            <li><strong>Total de Registros:</strong> {{ relatorio.total_registros }}</li>
+            <li><strong>Total de Colunas:</strong> {{ relatorio.total_colunas }}</li>
+        </ul>
+
+        <h2>Detalhamento de Colunas com Dados Faltantes</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome da Coluna</th>
+                    <th>Registros Vazios</th>
+                    <th>% de Incompletude (na coluna)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for coluna, contagem in colunas_vazias %}
+                    <tr>
+                        <td><strong>{{ coluna }}</strong></td>
+                        <td>{{ contagem }}</td>
+                        <td>{{ (contagem|floatformat:2 / relatorio.total_registros|floatformat:2) * 100|floatformat:2 }}%</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="3" style="text-align: center; color: green;">Nenhuma coluna com dados faltantes encontrada!</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>
