@@ -7,10 +7,10 @@
     <style>
         body { font-family: sans-serif; margin: 40px; background-color: #f4f7f6; }
         .container { max-width: 900px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; } /* 3 colunas */
         .bloco-acoes { }
         .btn { display: block; width: 100%; color: white; padding: 15px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s; margin-bottom: 15px; }
-        .btn:hover { background-color: #218838; }
+        .btn:hover { opacity: 0.8; }
         .messages { list-style: none; padding: 0; }
         .messages .success { border: 1px solid #155724; background-color: #d4edda; color: #155724; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
         .execucao-header { background-color: #f9f9f9; padding: 10px 15px; border-bottom: 1px solid #ddd; font-size: 0.9em; }
@@ -18,20 +18,20 @@
         .relatorio-metricas { background-color: #fdfdfd; border: 1px solid #eee; padding: 15px; border-radius: 5px; margin-bottom: 15px; }
         .relatorio-metricas ul { padding-left: 20px; margin: 0; }
         .nav-link { margin-top: 20px; font-size: 1.1em; }
+        .status-sucesso { color: #28a745; font-weight: bold; }
+        .status-falhou { color: #dc3545; font-weight: bold; }
+        .log-resumo { font-family: monospace; background: #eee; padding: 8px; font-size: 0.85em; margin-top: 5px; border-radius: 3px; }
         
         /* Estilos dos botões */
-        .btn-success { background-color: #28a745; } /* Verde para Análise Simples */
-        .btn-info { background-color: #17a2b8; }    /* Azul para Análise Geral */
-        .btn-info:hover { background-color: #117a8b; }
-        .btn-secondary { background-color: #6c757d; }
-        .btn-secondary:hover { background-color: #5a6268; }
+        .btn-success { background-color: #28a745; }
+        .btn-info { background-color: #17a2b8; }
+        .btn-warning { background-color: #ffc107; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>{{ titulo }}</h1>
         <hr>
-
         {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
@@ -40,34 +40,64 @@
             </ul>
         {% endif %}
 
-        <div class="grid">
-            <div class="bloco-acoes">
-                <h3>Análises Específicas (Produção)</h3>
-                <p>Calcula métricas de negócio sobre os dados de produção limpos.</p>
-                <form method="post">
-                    {% csrf_token %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="grid">
+                <div class="bloco-acoes">
+                    <h3>Análise Completude Tabela de  Produção</h3>
+                    <p>Métricas de negócio sobre os dados limpos.</p>
                     <button type="submit" name="acao_analise_completude_usuarios" class="btn btn-success">
                         Analisar Completude (Usuários)
                     </button>
-                    </form>
-            </div>
-            
-            <div class="bloco-acoes">
-                <h3>Análises Gerais (Staging)</h3>
-                <p>Calcula a completude geral (DAMA) dos dados brutos nas tabelas de staging.</p>
-                <form method="post">
-                    {% csrf_token %}
+                </div>
+                
+                <div class="bloco-acoes">
+                    <h3>Análise Completude Tabela de Staging (DAMA)</h3>
+                    <p>Métrica DAMA (células) sobre os dados brutos.</p>
                     <button type="submit" name="acao_analise_completude_geral" class="btn btn-info">
-                        Análise Geral de Células (Staging)
+                        Análise Geral Completude das Células
                     </button>
-                    </form>
+                </div>
+                
+                <div class="bloco-acoes">
+                    <h3>Análise Validade de Formato Tabela Staging (DAMA)</h3>
+                    <p>Valida o formato dos dados brutos contra o dicionário.</p>
+                    <button type="submit" name="acao_analise_validade" class="btn btn-warning">
+                        Análise de Validade de Formato
+                    </button>
+                </div>
             </div>
-        </div>
+        </form>
 
         <hr style="margin-top: 30px;">
         
+        <h2>Histórico de Análise de Validade (Staging)</h2>
+        {% for relatorio in ultimos_relatorios_validade %}
+            <a href="{% url 'detalhe_relatorio_validade' pk=relatorio.id %}" style="text-decoration: none; color: inherit;">
+                <div class="relatorio-metricas">
+                    <div class="execucao-header">
+                        <strong>Relatório de Validade para: {{ relatorio.tabela_analisada }}</strong><br>
+                        Executado em: {{ relatorio.timestamp_execucao }}
+                    </div>
+                    <div class="execucao-body">
+                        <ul>
+                            <li>
+                                <strong>Validade de Formato (DAMA):</strong> 
+                                <span class="{% if relatorio.percentual_validade > 99 %}status-sucesso{% else %}status-falhou{% endif %}">
+                                    {{ relatorio.percentual_validade|floatformat:2 }}%
+                                </span>
+                            </li>
+                            <li><strong>Células Inválidas:</strong> {{ relatorio.total_celulas_invalidas }}</li>
+                        </ul>
+                        <small style="color: #007bff;">Clique para ver o relatório detalhado...</small>
+                    </div>
+                </div>
+            </a>
+        {% empty %}
+            <p>Nenhum relatório de validade gerado ainda.</p>
+        {% endfor %}
+        <hr style="margin-top: 30px;">
         <h2>Histórico de Análise Geral (Staging)</h2>
-
         {% for relatorio in ultimos_relatorios_gerais %}
             <a href="{% url 'detalhe_relatorio_geral' pk=relatorio.id %}" style="text-decoration: none; color: inherit;">
                 <div class="relatorio-metricas">
@@ -94,11 +124,24 @@
         {% endfor %}
 
         <hr style="margin-top: 30px;">
-
+        
         <h2>Histórico de Análise Específica (Produção)</h2>
         {% for relatorio in ultimos_relatorios_usuarios %}
             <div class="relatorio-metricas">
+                <div class="execucao-header">
+                    <strong>Relatório de Completude #{{ relatorio.id }}</strong> - 
+                    Executado em: {{ relatorio.timestamp_execucao }}
                 </div>
+                <div class="execucao-body">
+                    <ul>
+                        <li><strong>Total de Usuários:</strong> {{ relatorio.total_usuarios }}</li>
+                        <li><strong>Contas sem Gerente:</strong> {{ relatorio.sem_gerente }} ({{ relatorio.perc_sem_gerente|floatformat:2 }}%)</li>
+                        <li><strong>Contas sem Departamento:</strong> {{ relatorio.sem_departamento }} ({{ relatorio.perc_sem_departamento|floatformat:2 }}%)</li>
+                        <li><strong>Contas sem Cargo:</strong> {{ relatorio.sem_cargo }} ({{ relatorio.perc_sem_cargo|floatformat:2 }}%)</li>
+                        <li><strong>Índice de Contato Completo:</strong> {{ relatorio.contato_completo }} ({{ relatorio.perc_contato_completo|floatformat:2 }}%)</li>
+                    </ul>
+                </div>
+            </div>
         {% empty %}
             <p>Nenhum relatório de análise específica gerado ainda.</p>
         {% endfor %}

@@ -30,6 +30,7 @@ class RelatorioCompletudeGeral(models.Model):
     """
     timestamp_inicio = models.DateTimeField(auto_now_add=True)
     timestamp_fim = models.DateTimeField(null=True, blank=True)
+    tabela_analisada = models.CharField(max_length=100)
     
     # A fórmula DAMA: (preenchidas / total) * 100
     total_registros = models.BigIntegerField()
@@ -49,3 +50,20 @@ class RelatorioCompletudeGeral(models.Model):
         if self.timestamp_fim and self.timestamp_inicio:
             return self.timestamp_fim - self.timestamp_inicio
         return None
+
+class RelatorioValidadeFormato(models.Model):
+    """
+    Armazena o resultado da análise de validade de formato (DAMA).
+    Mede, das células preenchidas, quantas são válidas.
+    """
+    timestamp_execucao = models.DateTimeField(auto_now_add=True)
+    tabela_analisada = models.CharField(max_length=100)
+    total_celulas_preenchidas = models.BigIntegerField()
+    total_celulas_invalidas = models.BigIntegerField()
+    total_celulas_vazias = models.BigIntegerField()
+    percentual_validade = models.FloatField()
+    
+    detalhamento_erros = models.JSONField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Relatório de Validade de {self.tabela_analisada} ({self.timestamp_execucao.strftime('%Y-%m-%d %H:%M')})"

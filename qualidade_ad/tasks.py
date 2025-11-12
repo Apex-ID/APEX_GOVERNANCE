@@ -20,6 +20,7 @@ def executar_pipeline_completo_task(self):
     try:
         execucao.status = 'EM_PROGRESSO'
         execucao.save()
+        
         logger.info(f"[Execução #{execucao.id}] INICIANDO ETAPA 1: Extração...")
         self.update_state(state='PROGRESS', meta={'passo_atual': 20, 'mensagem_status': 'Iniciando Etapa 1: Extração...'})
         executar_extracao_ad(execucao.id)
@@ -43,6 +44,7 @@ def executar_pipeline_completo_task(self):
         execucao.status = 'CONCLUIDO'
         execucao.timestamp_fim = timezone.now()
         execucao.save()
+        
         logger.info(f"[Execução #{execucao.id}] Pipeline concluído com SUCESSO.")
         return {'estado': 'CONCLUÍDO', 'mensagem': f'Pipeline (Execução #{execucao.id}) concluído com sucesso!'}
 
@@ -53,6 +55,7 @@ def executar_pipeline_completo_task(self):
         execucao.save()
         self.update_state(state='FAILURE', meta={'tipo_erro': type(e).__name__, 'mensagem_erro': str(e)})
         
+       
         return {'estado': 'FALHOU', 'mensagem': f"Falha no pipeline: {e}"}
         # -------------------------------
 
@@ -92,6 +95,7 @@ def importar_arquivos_existentes_task(self):
         execucao.timestamp_fim = timezone.now()
         execucao.save()
         self.update_state(state='FAILURE', meta={'tipo_erro': type(e).__name__, 'mensagem_erro': str(e)})
+        
         
         return {'estado': 'FALHOU', 'mensagem': f"Falha na importação: {e}"}
         # -------------------------------
