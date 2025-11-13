@@ -1,4 +1,4 @@
-# qualidade_ad/tasks.py
+# Dentro de: qualidade_ad/tasks.py
 
 from celery import shared_task
 from django.utils import timezone
@@ -55,7 +55,7 @@ def executar_pipeline_completo_task(self):
         execucao.save()
         self.update_state(state='FAILURE', meta={'tipo_erro': type(e).__name__, 'mensagem_erro': str(e)})
         
-       
+        
         return {'estado': 'FALHOU', 'mensagem': f"Falha no pipeline: {e}"}
         # -------------------------------
 
