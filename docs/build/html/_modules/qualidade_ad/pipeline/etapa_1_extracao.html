@@ -1,0 +1,234 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qualidade_ad.pipeline.etapa_1_extracao &mdash; APEX_GOVERNANCE 20/01/2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=e2184e81"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            APEX_GOVERNANCE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">APEX_GOVERNANCE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qualidade_ad.pipeline.etapa_1_extracao</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qualidade_ad.pipeline.etapa_1_extracao</h1><div class="highlight"><pre>
+<span></span><span class="c1">#qualidade_ad/pipeline/etapa_1_extracao.py</span>
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">ldap3</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">timezone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qualidade_ad.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogEtapa</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="executar_extracao_ad">
+<a class="viewcode-back" href="../../../qualidade_ad.pipeline.html#qualidade_ad.pipeline.etapa_1_extracao.executar_extracao_ad">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">executar_extracao_ad</span><span class="p">(</span><span class="n">execucao_id</span><span class="p">):</span>
+    <span class="n">etapa_nome</span> <span class="o">=</span> <span class="s1">&#39;ETAPA_1_EXTRACAO&#39;</span>
+    <span class="n">timestamp_inicio</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">resumo_da_etapa</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">status_final</span> <span class="o">=</span> <span class="s2">&quot;SUCESSO&quot;</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="kc">None</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [Etapa 1] Iniciando extração do AD (Execução ID: </span><span class="si">{</span><span class="n">execucao_id</span><span class="si">}</span><span class="s2">)...&quot;</span><span class="p">)</span>
+        
+        <span class="n">load_dotenv</span><span class="p">()</span>
+        <span class="n">server_uri</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;AD_SERVER&quot;</span><span class="p">)</span>
+        <span class="n">bind_user</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;AD_USER&quot;</span><span class="p">)</span>
+        <span class="n">bind_password</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;AD_PASSWORD&quot;</span><span class="p">)</span>
+        <span class="n">search_base</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;AD_SEARCH_BASE&quot;</span><span class="p">)</span>
+
+        <span class="c1"># --- INÍCIO DA CORREÇÃO ---</span>
+        <span class="c1"># Corrigido: Usando 3 &#39;dirname&#39; para chegar na raiz do projeto (APEX_GOVERNANCE)</span>
+        <span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))))</span>
+        <span class="c1"># --- FIM DA CORREÇÃO ---</span>
+
+        <span class="n">save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;temp_data&#39;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="n">server_uri</span><span class="p">,</span> <span class="n">bind_user</span><span class="p">,</span> <span class="n">bind_password</span><span class="p">,</span> <span class="n">search_base</span><span class="p">]):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;  [Etapa 1] ERRO: Credenciais do AD não encontradas no .env.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Credenciais do AD ausentes no .env&quot;</span><span class="p">)</span>
+
+        <span class="n">TARGET_OBJECTS</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;users&quot;</span><span class="p">:</span> <span class="s2">&quot;(&amp;(objectClass=user)(objectCategory=person))&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;computers&quot;</span><span class="p">:</span> <span class="s2">&quot;(objectClass=computer)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;groups&quot;</span><span class="p">:</span> <span class="s2">&quot;(objectClass=group)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ous&quot;</span><span class="p">:</span> <span class="s2">&quot;(objectClass=organizationalUnit)&quot;</span>
+        <span class="p">}</span>
+        
+        <span class="n">report_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">ldap3</span><span class="o">.</span><span class="n">Server</span><span class="p">(</span><span class="n">server_uri</span><span class="p">,</span> <span class="n">use_ssl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">get_info</span><span class="o">=</span><span class="n">ldap3</span><span class="o">.</span><span class="n">ALL</span><span class="p">)</span>
+        
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">ldap3</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">bind_user</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">bind_password</span><span class="p">,</span> <span class="n">auto_bind</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;  [Etapa 1] Conexão com o AD estabelecida.&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">category</span><span class="p">,</span> <span class="n">ldap_filter</span> <span class="ow">in</span> <span class="n">TARGET_OBJECTS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; Processando categoria: </span><span class="si">{</span><span class="n">category</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">search_generator</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">extend</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">paged_search</span><span class="p">(</span>
+                <span class="n">search_base</span><span class="o">=</span><span class="n">search_base</span><span class="p">,</span> <span class="n">search_filter</span><span class="o">=</span><span class="n">ldap_filter</span><span class="p">,</span>
+                <span class="n">attributes</span><span class="o">=</span><span class="n">ldap3</span><span class="o">.</span><span class="n">ALL_ATTRIBUTES</span><span class="p">,</span> <span class="n">paged_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">generator</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+            <span class="n">entries</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">search_generator</span><span class="p">)</span>
+            <span class="n">object_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">entries</span><span class="p">)</span>
+            <span class="n">report_data</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">=</span> <span class="n">object_count</span>
+            
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">entries</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    AVISO: Nenhum objeto do tipo &#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&#39; encontrado.&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; </span><span class="si">{</span><span class="n">object_count</span><span class="si">}</span><span class="s2"> objetos encontrados.&quot;</span><span class="p">)</span>
+            <span class="n">all_attribute_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;attributes&#39;</span> <span class="ow">in</span> <span class="n">entry</span> <span class="ow">and</span> <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;attributes&#39;</span><span class="p">]:</span>
+                    <span class="n">all_attribute_names</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">entry</span><span class="p">[</span><span class="s1">&#39;attributes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            
+            <span class="n">sorted_attributes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">all_attribute_names</span><span class="p">))</span>
+            
+            <span class="n">output_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;ad_</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; Gravando dados em: &#39;</span><span class="si">{</span><span class="n">output_file_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+            
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictWriter</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">fieldnames</span><span class="o">=</span><span class="n">sorted_attributes</span><span class="p">)</span>
+                <span class="n">writer</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+                    <span class="n">row_data</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;attributes&#39;</span><span class="p">,</span> <span class="p">{})</span>
+                    <span class="n">cleaned_row</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">sorted_attributes</span><span class="p">:</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="n">row_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">cleaned_row</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span> <span class="n">cleaned_row</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+                        <span class="k">else</span><span class="p">:</span> <span class="n">cleaned_row</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                    <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">cleaned_row</span><span class="p">)</span>
+            
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; Arquivo para &#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&#39; gerado.&quot;</span><span class="p">)</span>
+
+        <span class="n">end_time_legacy</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">report_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="s2">&quot;extraction_report.txt&quot;</span><span class="p">)</span>
+        
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">report_file_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;RELATÓRIO DE EXTRAÇÃO DE DADOS DO ACTIVE DIRECTORY</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Início: </span><span class="si">{</span><span class="n">timestamp_inicio</span><span class="si">}</span><span class="s2"> | Fim: </span><span class="si">{</span><span class="n">end_time_legacy</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Duração Total: </span><span class="si">{</span><span class="n">end_time_legacy</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">timestamp_inicio</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">category</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">report_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- </span><span class="si">{</span><span class="n">category</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> objetos</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [Etapa 1] Relatório de extração salvo em &#39;</span><span class="si">{</span><span class="n">report_file_path</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+        <span class="n">total_objetos</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">report_data</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">resumo_da_etapa</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Extração concluída. </span><span class="si">{</span><span class="n">total_objetos</span><span class="si">}</span><span class="s2"> objetos totais processados.&quot;</span>
+        
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">status_final</span> <span class="o">=</span> <span class="s2">&quot;FALHOU&quot;</span>
+        <span class="n">resumo_da_etapa</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ERRO CRÍTICO: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [Etapa 1] ERRO: </span><span class="si">{</span><span class="n">resumo_da_etapa</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">e</span>
+    
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">conn</span> <span class="ow">and</span> <span class="n">conn</span><span class="o">.</span><span class="n">bound</span><span class="p">:</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">unbind</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;  [Etapa 1] Conexão com o AD foi encerrada.&quot;</span><span class="p">)</span>
+        
+        <span class="n">timestamp_fim</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">LogEtapa</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">execucao_id</span><span class="o">=</span><span class="n">execucao_id</span><span class="p">,</span> <span class="n">etapa_nome</span><span class="o">=</span><span class="n">etapa_nome</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status_final</span><span class="p">,</span>
+                <span class="n">timestamp_inicio</span><span class="o">=</span><span class="n">timestamp_inicio</span><span class="p">,</span> <span class="n">timestamp_fim</span><span class="o">=</span><span class="n">timestamp_fim</span><span class="p">,</span>
+                <span class="n">resumo_execucao</span><span class="o">=</span><span class="n">resumo_da_etapa</span>
+            <span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [Etapa 1] Log de execução salvo no banco de dados.&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">db_error</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [Etapa 1] ERRO CRÍTICO AO SALVAR LOG: </span><span class="si">{</span><span class="n">db_error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+    <span class="k">return</span> <span class="n">resumo_da_etapa</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Sergio Santana dos Santos.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

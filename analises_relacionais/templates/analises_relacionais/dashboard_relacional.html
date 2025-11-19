@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ titulo }}</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; background-color: #f4f7f6; }
+        .container { max-width: 1000px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 8px; }
+        .btn { display: block; width: 100%; color: white; padding: 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; background-color: #fd7e14; } /* Laranja */
+        .btn:hover { opacity: 0.9; }
+        .btn-dark { background-color: #343a40; text-decoration: none; display: inline-block; width: auto; padding: 10px 20px; color: white; border-radius: 5px; }
+        
+        .relatorio-metricas { border: 1px solid #e0e0e0; border-radius: 5px; margin-bottom: 15px; padding: 15px; background: #fff; text-decoration: none; color: inherit; display: block; transition: transform 0.2s; }
+        .relatorio-metricas:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-color: #bbb; }
+        
+        .status-sucesso { color: #28a745; font-weight: bold; }
+        .status-falhou { color: #dc3545; font-weight: bold; }
+        .meta-info { font-size: 0.85em; color: #666; margin-bottom: 5px; }
+        
+        .messages { list-style: none; padding: 0; margin-bottom: 20px; }
+        .messages li { padding: 15px; border-radius: 5px; margin-bottom: 10px; background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1 style="margin: 0;">{{ titulo }}</h1>
+            <a href="{% url 'painel_de_controle' %}" class="btn-dark">
+                &larr; Voltar ao Painel Principal
+            </a>
+        </div>
+        <hr>
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <p>Este painel executa regras de negócio complexas que cruzam dados entre tabelas para verificar a integridade e consistência do Active Directory.</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" name="acao_analise_consistencia" class="btn">
+                Executar Auditoria de Regras Relacionais
+            </button>
+        </form>
+
+        <h2 style="margin-top: 30px;">Resultados da Auditoria</h2>
+        
+        {% for rel in ultimos_relatorios %}
+            <a href="{% url 'detalhe_relatorio_relacional' pk=rel.id %}" class="relatorio-metricas">
+                <div class="meta-info">{{ rel.tabelas_envolvidas }} • {{ rel.timestamp_inicio }}</div>
+                <div style="font-size: 1.1em; margin-bottom: 5px;"><strong>{{ rel.nome_analise }}</strong></div>
+                
+                <div>
+                    Conformidade: 
+                    <span class="{% if rel.percentual_consistencia == 100 %}status-sucesso{% else %}status-falhou{% endif %}">
+                        {{ rel.percentual_consistencia|floatformat:2 }}%
+                    </span>
+                    &nbsp;|&nbsp;
+                    Inconsistências: <strong>{{ rel.total_inconsistencias }}</strong>
+                </div>
+                <div style="margin-top: 8px; font-size: 0.9em; color: #555;">
+                    {{ rel.descricao_impacto|truncatechars:100 }}
+                </div>
+            </a>
+        {% empty %}
+            <p style="color: #777; text-align: center;">Nenhuma auditoria executada ainda.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'qualidade_ad',
     'analises_simples',
     'analises_relacionais',
+    'importador_dinamico',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

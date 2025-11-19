@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qualidade_ad.pipeline.etapa_5_transformacao &mdash; APEX_GOVERNANCE 20/01/2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=e2184e81"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            APEX_GOVERNANCE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">APEX_GOVERNANCE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qualidade_ad.pipeline.etapa_5_transformacao</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qualidade_ad.pipeline.etapa_5_transformacao</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Dentro de: qualidade_ad/pipeline/etapa_5_transformacao.py</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_engine</span><span class="p">,</span> <span class="n">text</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">timezone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qualidade_ad.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogEtapa</span>
+
+<div class="viewcode-block" id="get_process_function_sql">
+<a class="viewcode-back" href="../../../qualidade_ad.pipeline.html#qualidade_ad.pipeline.etapa_5_transformacao.get_process_function_sql">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_process_function_sql</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">columns_info</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gera o SQL para a função PL/pgSQL de processamento de uma tabela.</span>
+<span class="sd">    *** ATUALIZADO PARA A NOVA ARQUITETURA ***</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">staging_table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">_staging&quot;</span>
+    
+    <span class="c1"># Filtra a coluna &#39;id&#39; para não incluí-la no INSERT ou SELECT</span>
+    <span class="n">prod_columns_info</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns_info</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;id&#39;</span><span class="p">]</span>
+    
+    <span class="n">col_names</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;&#39;</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">prod_columns_info</span><span class="p">])</span>
+    
+    <span class="n">select_expressions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">col_type</span> <span class="ow">in</span> <span class="n">prod_columns_info</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;bytea&#39;</span> <span class="ow">in</span> <span class="n">col_type</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="n">expression</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;DECODE(NULLIF(s.</span><span class="se">\&quot;</span><span class="si">{</span><span class="n">col_name</span><span class="si">}</span><span class="se">\&quot;</span><span class="s2">, &#39;&#39;), &#39;escape&#39;)&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">expression</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;CAST(NULLIF(s.</span><span class="se">\&quot;</span><span class="si">{</span><span class="n">col_name</span><span class="si">}</span><span class="se">\&quot;</span><span class="s2">, &#39;&#39;) AS </span><span class="si">{</span><span class="n">col_type</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="n">select_expressions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span>
+    <span class="n">select_clause</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">select_expressions</span><span class="p">)</span>
+
+    <span class="c1"># A função PL/pgSQL que tenta inserir; se falhar, registra o erro</span>
+    <span class="n">function_sql</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        CREATE OR REPLACE FUNCTION process_</span><span class="si">{</span><span class="n">staging_table</span><span class="si">}</span><span class="s2">(staging_row </span><span class="si">{</span><span class="n">staging_table</span><span class="si">}</span><span class="s2">)</span>
+<span class="s2">        RETURNS VOID AS $$</span>
+<span class="s2">        BEGIN</span>
+<span class="s2">            -- Insere nas colunas de produção (pulando o &#39;id&#39;)</span>
+<span class="s2">            INSERT INTO </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">col_names</span><span class="si">}</span><span class="s2">)</span>
+<span class="s2">            SELECT </span><span class="si">{</span><span class="n">select_clause</span><span class="si">}</span>
+<span class="s2">            FROM (SELECT staging_row.*) s;</span>
+<span class="s2">        EXCEPTION WHEN OTHERS THEN</span>
+<span class="s2">            -- ATUALIZADO: Insere o ID da linha de staging que falhou</span>
+<span class="s2">            INSERT INTO etl_error_log (table_name, staging_row_id, error_message, raw_data)</span>
+<span class="s2">            VALUES (&#39;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&#39;, staging_row.id, SQLERRM, to_jsonb(staging_row));</span>
+<span class="s2">        END;</span>
+<span class="s2">        $$ LANGUAGE plpgsql;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">text</span><span class="p">(</span><span class="n">function_sql</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="executar_transformacao_e_carga">
+<a class="viewcode-back" href="../../../qualidade_ad.pipeline.html#qualidade_ad.pipeline.etapa_5_transformacao.executar_transformacao_e_carga">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">executar_transformacao_e_carga</span><span class="p">(</span><span class="n">execucao_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Executa a Etapa 5 (Transformação Staging -&gt; Produção) e registra um LogEtapa.</span>
+<span class="sd">    *** ATUALIZADO PARA A NOVA ARQUITETURA ***</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">etapa_nome</span> <span class="o">=</span> <span class="s1">&#39;ETAPA_5_TRANSFORMACAO&#39;</span> <span class="c1"># Nome atualizado</span>
+    <span class="n">timestamp_inicio</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">resumo_da_etapa</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">status_final</span> <span class="o">=</span> <span class="s2">&quot;SUCESSO&quot;</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [Etapa 5] Iniciando transformação (Execução ID: </span><span class="si">{</span><span class="n">execucao_id</span><span class="si">}</span><span class="s2">)...&quot;</span><span class="p">)</span>
+        
+        <span class="n">load_dotenv</span><span class="p">()</span>
+        <span class="n">tables_to_process</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ad_computers&#39;</span><span class="p">,</span> <span class="s1">&#39;ad_groups&#39;</span><span class="p">,</span> <span class="s1">&#39;ad_ous&#39;</span><span class="p">,</span> <span class="s1">&#39;ad_users&#39;</span><span class="p">]</span>
+        
+        <span class="n">db_user</span><span class="p">,</span> <span class="n">db_pass</span><span class="p">,</span> <span class="n">db_host</span><span class="p">,</span> <span class="n">db_name</span> <span class="o">=</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DB_USER&#39;</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DB_PASS&#39;</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DB_HOST&#39;</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DB_NAME&#39;</span><span class="p">))</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="n">db_user</span><span class="p">,</span> <span class="n">db_pass</span><span class="p">,</span> <span class="n">db_host</span><span class="p">,</span> <span class="n">db_name</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Credenciais do DB ausentes no .env&quot;</span><span class="p">)</span>
+
+        <span class="n">db_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;postgresql://</span><span class="si">{</span><span class="n">db_user</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">db_pass</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">db_host</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">db_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_url</span><span class="p">,</span> <span class="n">execution_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;statement_timeout&quot;</span><span class="p">:</span> <span class="mi">900</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">})</span>
+        
+        <span class="n">total_errors</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total_success</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">with</span> <span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">connection</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  [Etapa 5] Conexão estabelecida.&quot;</span><span class="p">)</span>
+            
+            <span class="c1"># A tabela de log já foi criada na Etapa 3</span>
+            
+            <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">tables_to_process</span><span class="p">:</span>
+                <span class="n">staging_table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">_staging&quot;</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt; Processando: </span><span class="si">{</span><span class="n">staging_table</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                
+                <span class="n">trans</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;      -&gt; Limpando tabelas de produção e log de erros antigos...&quot;</span><span class="p">)</span>
+                    <span class="n">connection</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;TRUNCATE TABLE &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot; CASCADE;&#39;</span><span class="p">))</span>
+                    <span class="n">connection</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DELETE FROM etl_error_log WHERE table_name = &#39;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&#39;;&quot;</span><span class="p">))</span>
+                    
+                    <span class="c1"># Busca as colunas da tabela de *produção*</span>
+                    <span class="n">cols_info_query</span> <span class="o">=</span> <span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT column_name, data_type FROM information_schema.columns WHERE table_name = &#39;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&#39; ORDER BY ordinal_position;&quot;</span><span class="p">)</span>
+                    <span class="n">cols_info</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">cols_info_query</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+                    
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;      -&gt; Criando/Atualizando a função de processamento...&quot;</span><span class="p">)</span>
+                    <span class="n">function_sql</span> <span class="o">=</span> <span class="n">get_process_function_sql</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">cols_info</span><span class="p">)</span>
+                    <span class="n">connection</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DROP FUNCTION IF EXISTS process_</span><span class="si">{</span><span class="n">staging_table</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">staging_table</span><span class="si">}</span><span class="s2">);&quot;</span><span class="p">))</span>
+                    <span class="n">connection</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">function_sql</span><span class="p">)</span>
+                    
+                    <span class="n">total_rows</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SELECT COUNT(*) FROM </span><span class="si">{</span><span class="n">staging_table</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;      -&gt; Aplicando função em </span><span class="si">{</span><span class="n">total_rows</span><span class="si">}</span><span class="s2"> linhas...&quot;</span><span class="p">)</span>
+                    
+                    <span class="n">connection</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT process_</span><span class="si">{</span><span class="n">staging_table</span><span class="si">}</span><span class="s2">(s) FROM </span><span class="si">{</span><span class="n">staging_table</span><span class="si">}</span><span class="s2"> s;&quot;</span><span class="p">))</span>
+                    <span class="n">trans</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                    
+                    <span class="n">error_count</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT COUNT(*) FROM etl_error_log WHERE table_name = &#39;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span>
+                    <span class="n">success_count</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT COUNT(*) FROM </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span>
+                    
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;      SUCESSO: Processamento concluído.&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        - Linhas inseridas com sucesso: </span><span class="si">{</span><span class="n">success_count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        - Linhas com erro (logadas): </span><span class="si">{</span><span class="n">error_count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    
+                    <span class="n">total_errors</span> <span class="o">+=</span> <span class="n">error_count</span>
+                    <span class="n">total_success</span> <span class="o">+=</span> <span class="n">success_count</span>
+                    <span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                    
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">trans</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+
+        <span class="k">if</span> <span class="n">total_errors</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">resumo_da_etapa</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Transformação concluída. </span><span class="si">{</span><span class="n">total_success</span><span class="si">}</span><span class="s2"> linhas carregadas. ATENÇÃO: </span><span class="si">{</span><span class="n">total_errors</span><span class="si">}</span><span class="s2"> erros registrados.&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">resumo_da_etapa</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Transformação concluída. Todas as </span><span class="si">{</span><span class="n">total_success</span><span class="si">}</span><span class="s2"> linhas foram carregadas com sucesso.&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [Etapa 5] </span><span class="si">{</span><span class="n">resumo_da_etapa</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">status_final</span> <span class="o">=</span> <span class="s2">&quot;FALHOU&quot;</span>
+        <span class="n">resumo_da_etapa</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ERRO CRÍTICO: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [Etapa 5] ERRO: </span><span class="si">{</span><span class="n">resumo_da_etapa</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">e</span>
+    
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">timestamp_fim</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">LogEtapa</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">execucao_id</span><span class="o">=</span><span class="n">execucao_id</span><span class="p">,</span>
+                <span class="n">etapa_nome</span><span class="o">=</span><span class="n">etapa_nome</span><span class="p">,</span>
+                <span class="n">status</span><span class="o">=</span><span class="n">status_final</span><span class="p">,</span>
+                <span class="n">timestamp_inicio</span><span class="o">=</span><span class="n">timestamp_inicio</span><span class="p">,</span>
+                <span class="n">timestamp_fim</span><span class="o">=</span><span class="n">timestamp_fim</span><span class="p">,</span>
+                <span class="n">resumo_execucao</span><span class="o">=</span><span class="n">resumo_da_etapa</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [Etapa 5] Log de execução salvo no banco de dados.&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">db_error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [Etapa 5] ERRO CRÍTICO AO SALVAR LOG: </span><span class="si">{</span><span class="n">db_error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+    <span class="k">return</span> <span class="n">resumo_da_etapa</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Sergio Santana dos Santos.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

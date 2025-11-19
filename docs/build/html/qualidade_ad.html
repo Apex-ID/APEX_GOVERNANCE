@@ -1,0 +1,432 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qualidade_ad package &mdash; APEX_GOVERNANCE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=c0c8e3fa"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="qualidade_ad.migrations package" href="qualidade_ad.migrations.html" />
+    <link rel="prev" title="preparar_banco_dados module" href="preparar_banco_dados.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            APEX_GOVERNANCE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Pacotes e Módulos</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">APEX_GOVERNANCE</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="analises_relacionais.html">analises_relacionais package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.html">analises_simples package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apex_project.html">apex_project package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="carga_manual.html">carga_manual module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="importador_dinamico.html">importador_dinamico package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preparar_banco_dados.html">preparar_banco_dados module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">qualidade_ad package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qualidade_ad.migrations.html">qualidade_ad.migrations package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qualidade_ad.pipeline.html">qualidade_ad.pipeline package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="transformacao_manual.html">transformacao_manual module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">APEX_GOVERNANCE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">APEX_GOVERNANCE</a></li>
+      <li class="breadcrumb-item active">qualidade_ad package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/qualidade_ad.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="qualidade-ad-package">
+<h1>qualidade_ad package<a class="headerlink" href="#qualidade-ad-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="qualidade_ad.migrations.html">qualidade_ad.migrations package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="qualidade_ad.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qualidade_ad.migrations.html#module-qualidade_ad.migrations.0001_initial">qualidade_ad.migrations.0001_initial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qualidade_ad.migrations.html#qualidade_ad.migrations.0001_initial.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="qualidade_ad.migrations.html#qualidade_ad.migrations.0001_initial.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qualidade_ad.migrations.html#qualidade_ad.migrations.0001_initial.Migration.initial"><code class="docutils literal notranslate"><span class="pre">Migration.initial</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="qualidade_ad.migrations.html#qualidade_ad.migrations.0001_initial.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qualidade_ad.migrations.html#module-qualidade_ad.migrations">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qualidade_ad.pipeline.html">qualidade_ad.pipeline package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="qualidade_ad.pipeline.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qualidade_ad.pipeline.html#module-qualidade_ad.pipeline.etapa_1_extracao">qualidade_ad.pipeline.etapa_1_extracao module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qualidade_ad.pipeline.html#qualidade_ad.pipeline.etapa_1_extracao.executar_extracao_ad"><code class="docutils literal notranslate"><span class="pre">executar_extracao_ad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qualidade_ad.pipeline.html#module-qualidade_ad.pipeline.etapa_2_limpeza">qualidade_ad.pipeline.etapa_2_limpeza module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qualidade_ad.pipeline.html#qualidade_ad.pipeline.etapa_2_limpeza.executar_limpeza_csvs"><code class="docutils literal notranslate"><span class="pre">executar_limpeza_csvs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qualidade_ad.pipeline.html#module-qualidade_ad.pipeline.etapa_3_preparacao_banco">qualidade_ad.pipeline.etapa_3_preparacao_banco module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qualidade_ad.pipeline.html#qualidade_ad.pipeline.etapa_3_preparacao_banco.executar_preparacao_banco"><code class="docutils literal notranslate"><span class="pre">executar_preparacao_banco()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qualidade_ad.pipeline.html#module-qualidade_ad.pipeline.etapa_4_carga_staging">qualidade_ad.pipeline.etapa_4_carga_staging module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qualidade_ad.pipeline.html#qualidade_ad.pipeline.etapa_4_carga_staging.executar_carga_staging"><code class="docutils literal notranslate"><span class="pre">executar_carga_staging()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qualidade_ad.pipeline.html#module-qualidade_ad.pipeline.etapa_5_transformacao">qualidade_ad.pipeline.etapa_5_transformacao module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qualidade_ad.pipeline.html#qualidade_ad.pipeline.etapa_5_transformacao.executar_transformacao_e_carga"><code class="docutils literal notranslate"><span class="pre">executar_transformacao_e_carga()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="qualidade_ad.pipeline.html#qualidade_ad.pipeline.etapa_5_transformacao.get_process_function_sql"><code class="docutils literal notranslate"><span class="pre">get_process_function_sql()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qualidade_ad.pipeline.html#module-qualidade_ad.pipeline">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-qualidade_ad.admin">
+<span id="qualidade-ad-admin-module"></span><h2>qualidade_ad.admin module<a class="headerlink" href="#module-qualidade_ad.admin" title="Link to this heading"></a></h2>
+</section>
+<section id="module-qualidade_ad.apps">
+<span id="qualidade-ad-apps-module"></span><h2>qualidade_ad.apps module<a class="headerlink" href="#module-qualidade_ad.apps" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="qualidade_ad.apps.QualidadeAdConfig">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qualidade_ad.apps.</span></span><span class="sig-name descname"><span class="pre">QualidadeAdConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_module</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qualidade_ad/apps.html#QualidadeAdConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qualidade_ad.apps.QualidadeAdConfig" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AppConfig</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.apps.QualidadeAdConfig.default_auto_field">
+<span class="sig-name descname"><span class="pre">default_auto_field</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'django.db.models.BigAutoField'</span></em><a class="headerlink" href="#qualidade_ad.apps.QualidadeAdConfig.default_auto_field" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.apps.QualidadeAdConfig.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'qualidade_ad'</span></em><a class="headerlink" href="#qualidade_ad.apps.QualidadeAdConfig.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-qualidade_ad.models">
+<span id="qualidade-ad-models-module"></span><h2>qualidade_ad.models module<a class="headerlink" href="#module-qualidade_ad.models" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="qualidade_ad.models.ExecucaoPipeline">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qualidade_ad.models.</span></span><span class="sig-name descname"><span class="pre">ExecucaoPipeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qualidade_ad/models.html#ExecucaoPipeline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qualidade_ad.models.ExecucaoPipeline" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Representa uma única execução completa do pipeline.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="qualidade_ad.models.ExecucaoPipeline.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#qualidade_ad.models.ExecucaoPipeline.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="qualidade_ad.models.ExecucaoPipeline.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#qualidade_ad.models.ExecucaoPipeline.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.ExecucaoPipeline.STATUS_CHOICES">
+<span class="sig-name descname"><span class="pre">STATUS_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('INICIADO',</span> <span class="pre">'Iniciado'),</span> <span class="pre">('EM_PROGRESSO',</span> <span class="pre">'Em</span> <span class="pre">Progresso'),</span> <span class="pre">('CONCLUIDO',</span> <span class="pre">'Concluído'),</span> <span class="pre">('FALHOU',</span> <span class="pre">'Falhou')]</span></em><a class="headerlink" href="#qualidade_ad.models.ExecucaoPipeline.STATUS_CHOICES" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qualidade_ad.models.ExecucaoPipeline.get_next_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_next_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qualidade_ad.models.ExecucaoPipeline.get_next_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qualidade_ad.models.ExecucaoPipeline.get_previous_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_previous_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qualidade_ad.models.ExecucaoPipeline.get_previous_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qualidade_ad.models.ExecucaoPipeline.get_status_display">
+<span class="sig-name descname"><span class="pre">get_status_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">status&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qualidade_ad.models.ExecucaoPipeline.get_status_display" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.ExecucaoPipeline.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#qualidade_ad.models.ExecucaoPipeline.id" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.ExecucaoPipeline.logs_etapas">
+<span class="sig-name descname"><span class="pre">logs_etapas</span></span><a class="headerlink" href="#qualidade_ad.models.ExecucaoPipeline.logs_etapas" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.ExecucaoPipeline.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#qualidade_ad.models.ExecucaoPipeline.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.ExecucaoPipeline.status">
+<span class="sig-name descname"><span class="pre">status</span></span><a class="headerlink" href="#qualidade_ad.models.ExecucaoPipeline.status" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.ExecucaoPipeline.timestamp_fim">
+<span class="sig-name descname"><span class="pre">timestamp_fim</span></span><a class="headerlink" href="#qualidade_ad.models.ExecucaoPipeline.timestamp_fim" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.ExecucaoPipeline.timestamp_inicio">
+<span class="sig-name descname"><span class="pre">timestamp_inicio</span></span><a class="headerlink" href="#qualidade_ad.models.ExecucaoPipeline.timestamp_inicio" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qualidade_ad.models.</span></span><span class="sig-name descname"><span class="pre">LogEtapa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qualidade_ad/models.html#LogEtapa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qualidade_ad.models.LogEtapa" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Registra o resultado de uma etapa específica.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#qualidade_ad.models.LogEtapa.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.ETAPAS_CHOICES">
+<span class="sig-name descname"><span class="pre">ETAPAS_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ETAPA_1_EXTRACAO',</span> <span class="pre">'Etapa</span> <span class="pre">1:</span> <span class="pre">Extração</span> <span class="pre">AD'),</span> <span class="pre">('ETAPA_2_LIMPEZA',</span> <span class="pre">'Etapa</span> <span class="pre">2:</span> <span class="pre">Limpeza</span> <span class="pre">de</span> <span class="pre">CSVs'),</span> <span class="pre">('ETAPA_3_PREPARACAO_BANCO',</span> <span class="pre">'Etapa</span> <span class="pre">3:</span> <span class="pre">Preparação</span> <span class="pre">do</span> <span class="pre">Banco'),</span> <span class="pre">('ETAPA_4_CARGA_STAGING',</span> <span class="pre">'Etapa</span> <span class="pre">4:</span> <span class="pre">Carga</span> <span class="pre">para</span> <span class="pre">Staging'),</span> <span class="pre">('ETAPA_5_TRANSFORMACAO',</span> <span class="pre">'Etapa</span> <span class="pre">5:</span> <span class="pre">Transformação</span> <span class="pre">(Produção)'),</span> <span class="pre">('ETAPA_DESCONHECIDA',</span> <span class="pre">'Etapa</span> <span class="pre">Desconhecida')]</span></em><a class="headerlink" href="#qualidade_ad.models.LogEtapa.ETAPAS_CHOICES" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#qualidade_ad.models.LogEtapa.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.STATUS_CHOICES">
+<span class="sig-name descname"><span class="pre">STATUS_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('SUCESSO',</span> <span class="pre">'Sucesso'),</span> <span class="pre">('FALHOU',</span> <span class="pre">'Falhou')]</span></em><a class="headerlink" href="#qualidade_ad.models.LogEtapa.STATUS_CHOICES" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.etapa_nome">
+<span class="sig-name descname"><span class="pre">etapa_nome</span></span><a class="headerlink" href="#qualidade_ad.models.LogEtapa.etapa_nome" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.execucao">
+<span class="sig-name descname"><span class="pre">execucao</span></span><a class="headerlink" href="#qualidade_ad.models.LogEtapa.execucao" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.execucao_id">
+<span class="sig-name descname"><span class="pre">execucao_id</span></span><a class="headerlink" href="#qualidade_ad.models.LogEtapa.execucao_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.get_etapa_nome_display">
+<span class="sig-name descname"><span class="pre">get_etapa_nome_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">etapa_nome&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qualidade_ad.models.LogEtapa.get_etapa_nome_display" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.get_next_by_timestamp_fim">
+<span class="sig-name descname"><span class="pre">get_next_by_timestamp_fim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_fim&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qualidade_ad.models.LogEtapa.get_next_by_timestamp_fim" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.get_next_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_next_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qualidade_ad.models.LogEtapa.get_next_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.get_previous_by_timestamp_fim">
+<span class="sig-name descname"><span class="pre">get_previous_by_timestamp_fim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_fim&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qualidade_ad.models.LogEtapa.get_previous_by_timestamp_fim" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.get_previous_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_previous_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qualidade_ad.models.LogEtapa.get_previous_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.get_status_display">
+<span class="sig-name descname"><span class="pre">get_status_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">status&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qualidade_ad.models.LogEtapa.get_status_display" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#qualidade_ad.models.LogEtapa.id" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#qualidade_ad.models.LogEtapa.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.resumo_execucao">
+<span class="sig-name descname"><span class="pre">resumo_execucao</span></span><a class="headerlink" href="#qualidade_ad.models.LogEtapa.resumo_execucao" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.status">
+<span class="sig-name descname"><span class="pre">status</span></span><a class="headerlink" href="#qualidade_ad.models.LogEtapa.status" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.timestamp_fim">
+<span class="sig-name descname"><span class="pre">timestamp_fim</span></span><a class="headerlink" href="#qualidade_ad.models.LogEtapa.timestamp_fim" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qualidade_ad.models.LogEtapa.timestamp_inicio">
+<span class="sig-name descname"><span class="pre">timestamp_inicio</span></span><a class="headerlink" href="#qualidade_ad.models.LogEtapa.timestamp_inicio" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-qualidade_ad.tasks">
+<span id="qualidade-ad-tasks-module"></span><h2>qualidade_ad.tasks module<a class="headerlink" href="#module-qualidade_ad.tasks" title="Link to this heading"></a></h2>
+</section>
+<section id="module-qualidade_ad.tests">
+<span id="qualidade-ad-tests-module"></span><h2>qualidade_ad.tests module<a class="headerlink" href="#module-qualidade_ad.tests" title="Link to this heading"></a></h2>
+</section>
+<section id="module-qualidade_ad.urls">
+<span id="qualidade-ad-urls-module"></span><h2>qualidade_ad.urls module<a class="headerlink" href="#module-qualidade_ad.urls" title="Link to this heading"></a></h2>
+</section>
+<section id="module-qualidade_ad.views">
+<span id="qualidade-ad-views-module"></span><h2>qualidade_ad.views module<a class="headerlink" href="#module-qualidade_ad.views" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="qualidade_ad.views.painel_de_controle">
+<span class="sig-prename descclassname"><span class="pre">qualidade_ad.views.</span></span><span class="sig-name descname"><span class="pre">painel_de_controle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qualidade_ad/views.html#painel_de_controle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qualidade_ad.views.painel_de_controle" title="Link to this definition"></a></dt>
+<dd><p>View do painel de controle do pipeline (ETL).</p>
+</dd></dl>
+
+</section>
+<section id="module-qualidade_ad">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-qualidade_ad" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="preparar_banco_dados.html" class="btn btn-neutral float-left" title="preparar_banco_dados module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qualidade_ad.migrations.html" class="btn btn-neutral float-right" title="qualidade_ad.migrations package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Sergio Santana dos Santos.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

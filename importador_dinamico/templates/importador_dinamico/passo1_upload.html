@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Importador Dinâmico - Passo 1</title>
+    <style>body{font-family:sans-serif;padding:40px;}</style>
+</head>
+<body>
+    <h1>Importador Dinâmico: Upload</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Próximo: Configurar &rarr;</button>
+    </form>
+</body>
+</html>

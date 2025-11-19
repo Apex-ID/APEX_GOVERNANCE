@@ -7,12 +7,15 @@
     <style>
         body { font-family: sans-serif; margin: 40px; background-color: #f4f7f6; }
         .container { max-width: 900px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .btn { display: block; width: 100%; background-color: #007bff; color: white; padding: 15px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s; margin-bottom: 15px; }
-        .btn:hover { background-color: #0056b3; }
+        .btn { display: block; width: 100%; background-color: #007bff; color: white; padding: 15px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s; margin-bottom: 15px; text-decoration: none; text-align: center; }
+        .btn:hover { opacity: 0.9; }
         .btn-secondary { background-color: #6c757d; }
-        .btn-secondary:hover { background-color: #5a6268; }
+        .btn-purple { background-color: #6f42c1; }
+        .btn-orange { background-color: #fd7e14; } /* Cor para Relacional */
+        
         .messages { list-style: none; padding: 0; }
         .messages .success { border: 1px solid #155724; background-color: #d4edda; color: #155724; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        
         .execucao { border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
         .execucao-header { background-color: #f9f9f9; padding: 10px 15px; border-bottom: 1px solid #ddd; font-size: 0.9em; }
         .execucao-body { padding: 15px; }
@@ -22,7 +25,6 @@
         .status-falhou { color: #dc3545; font-weight: bold; }
         .status-em-progresso { color: #007bff; font-weight: bold; }
         .log-resumo { font-family: monospace; background: #eee; padding: 8px; font-size: 0.85em; margin-top: 5px; border-radius: 3px; white-space: pre-wrap; overflow-wrap: break-word; }
-        .nav-link { margin-top: 20px; font-size: 1.1em; }
     </style>
 </head>
 <body>
@@ -88,9 +90,22 @@
         {% endfor %}
         
         <hr style="margin-top: 40px;">
-        <div class="nav-link">
-            <p><a href="{% url 'dashboard_analises' %}">Ir para o Dashboard de Análises</a></p>
-            <p><a href="/admin/">Acessar Área Administrativa</a></p>
+        
+        <div style="display: flex; gap: 20px; justify-content: center;">
+            <a href="{% url 'dashboard_analises' %}" class="btn btn-purple" style="width: auto; padding: 15px 30px;">
+                Dashboard de Métricas Simples &rarr;
+            </a>
+            
+            <a href="{% url 'dashboard_relacional' %}" class="btn btn-orange" style="width: auto; padding: 15px 30px;">
+                Dashboard Relacional (Cruzamentos) &rarr;
+            </a>
+            <a href="{% url 'upload_csv' %}" class="btn" style="background-color: #17a2b8; color: white;">
+                Ferramenta: Criar Novo Banco a partir de CSV
+            </a>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <p><a href="/admin/" style="color: #666;">Acessar Área Administrativa</a></p>
         </div>
     </div>
 </body>

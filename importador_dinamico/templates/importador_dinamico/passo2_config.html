@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Configurar Importação</title>
+    <style>
+        body{font-family:sans-serif;padding:40px;}
+        table {width:100%; border-collapse:collapse; margin-bottom:20px;}
+        th, td {border:1px solid #ddd; padding:8px; text-align:left;}
+        .preview-box {overflow-x:auto;}
+    </style>
+</head>
+<body>
+    <h1>Configurar Importação: {{ filename }}</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <h3>1. Configuração do Banco de Dados</h3>
+        <label>Nome do Novo Banco (Opcional - deixe em branco para automático):</label><br>
+        <input type="text" name="nome_banco" placeholder="ex: campanha_vendas_2025"><br><br>
+
+        <h3>2. Selecione as Colunas para Importar</h3>
+        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:10px;">
+            {% for col in colunas %}
+                <div>
+                    <input type="checkbox" name="colunas" value="{{ col }}" id="id_{{ col }}" checked>
+                    <label for="id_{{ col }}">{{ col }}</label>
+                </div>
+            {% endfor %}
+        </div>
+
+        <h3>3. Prévia dos Dados (5 primeiras linhas)</h3>
+        <div class="preview-box">
+            <table>
+                <thead>
+                    <tr>
+                        {% for col in colunas %}<th>{{ col }}</th>{% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in dados_preview %}
+                        <tr>
+                            {% for col in colunas %}
+                                <td>...</td> 
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p><em>(Prévia simplificada para validação de leitura)</em></p>
+        </div>
+
+        <button type="submit" style="background:green; color:white; padding:15px; border:none; cursor:pointer;">
+            CRIAR BANCO E IMPORTAR DADOS
+        </button>
+    </form>
+</body>
+</html>

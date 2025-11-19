@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ titulo }}</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; margin: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        h1, h2 { border-bottom: 2px solid #eee; }
+        .box { padding: 20px; border: 1px solid #ddd; border-radius: 5px; margin: 20px 0; }
+        .status-sucesso { background-color: #d4edda; color: #155724; }
+        .status-falhou { background-color: #f8d7da; color: #721c24; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'dashboard_relacional' %}" class="no-print">&larr; Voltar</a>
+        <h1>{{ titulo }}</h1>
+        <p>Executado em: {{ relatorio.timestamp_inicio }}</p>
+
+        <div class="box {{ status_classe }}">
+            <h2>Resultado da Análise</h2>
+            <p><strong>Regra:</strong> {{ relatorio.nome_analise }}</p>
+            <p><strong>Consistência:</strong> {{ relatorio.percentual_consistencia|floatformat:2 }}%</p>
+            <p><strong>Falhas Encontradas:</strong> {{ relatorio.total_inconsistencias }} de {{ relatorio.total_registros_analisados }}</p>
+        </div>
+
+        <h3>Impacto no Negócio</h3>
+        <p>{{ relatorio.descricao_impacto }}</p>
+
+        <h3>Exemplos de Inconsistências</h3>
+        {% if relatorio.exemplos_inconsistencias %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Objeto (Origem)</th>
+                        <th>Problema (Detalhe)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for exemplo in relatorio.exemplos_inconsistencias %}
+                        <tr>
+                            <td>{{ exemplo.origem }}</td>
+                            <td>{{ exemplo.detalhe }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p style="color: green;">Nenhuma inconsistência encontrada!</p>
+        {% endif %}
+    </div>
+</body>
+</html>

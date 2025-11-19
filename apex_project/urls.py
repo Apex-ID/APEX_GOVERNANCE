@@ -19,6 +19,12 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # URLs do Pipeline (Carga)
     path('', include('qualidade_ad.urls')),
+    # URLs de Análises Simples (Completude, Validade, Unicidade)
     path('', include('analises_simples.urls')),
+    # URLs de Análises Relacionais (Acurácia, Consistência)
+    path('', include('analises_relacionais.urls')),
+    # URLs do Importador Dinâmico(Importação de CSV para Banco de Dados)
+    path('', include('importador_dinamico.urls')),
 ]

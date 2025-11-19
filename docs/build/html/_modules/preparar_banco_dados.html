@@ -1,0 +1,267 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>preparar_banco_dados &mdash; APEX_GOVERNANCE 20/01/2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=e2184e81"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            APEX_GOVERNANCE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">APEX_GOVERNANCE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">preparar_banco_dados</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for preparar_banco_dados</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">psycopg2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
+
+<span class="c1"># --- DEFINIÇÃO DAS TABELAS ---</span>
+
+<span class="c1"># Nomes de todas as tabelas que vamos criar</span>
+<span class="n">TABLE_NAMES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;ad_users_staging&quot;</span><span class="p">,</span> <span class="s2">&quot;ad_computers_staging&quot;</span><span class="p">,</span> <span class="s2">&quot;ad_groups_staging&quot;</span><span class="p">,</span> <span class="s2">&quot;ad_ous_staging&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ad_users&quot;</span><span class="p">,</span> <span class="s2">&quot;ad_computers&quot;</span><span class="p">,</span> <span class="s2">&quot;ad_groups&quot;</span><span class="p">,</span> <span class="s2">&quot;ad_ous&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;etl_error_log&quot;</span>
+<span class="p">]</span>
+
+<span class="c1"># Dicionário com todos os comandos SQL para criar as tabelas</span>
+<span class="n">SQL_COMMANDS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># --- TABELAS DE STAGING (Tudo como TEXT) ---</span>
+    <span class="s2">&quot;ad_users_staging&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        CREATE TABLE ad_users_staging (</span>
+<span class="s2">            id SERIAL PRIMARY KEY, &quot;accountExpires&quot; TEXT, &quot;adminCount&quot; TEXT, &quot;badPasswordTime&quot; TEXT, &quot;badPwdCount&quot; TEXT, &quot;c&quot; TEXT, &quot;cn&quot; TEXT, &quot;co&quot; TEXT, &quot;codePage&quot; TEXT, &quot;company&quot; TEXT, &quot;countryCode&quot; TEXT, &quot;dSCorePropagationData&quot; TEXT, &quot;department&quot; TEXT, &quot;description&quot; TEXT, &quot;directReports&quot; TEXT, &quot;displayName&quot; TEXT, &quot;distinguishedName&quot; TEXT, &quot;division&quot; TEXT, &quot;facsimileTelephoneNumber&quot; TEXT, &quot;givenName&quot; TEXT, &quot;homePhone&quot; TEXT, &quot;info&quot; TEXT, &quot;initials&quot; TEXT, &quot;instanceType&quot; TEXT, &quot;ipPhone&quot; TEXT, &quot;isCriticalSystemObject&quot; TEXT, &quot;lastKnownParent&quot; TEXT, &quot;lastLogoff&quot; TEXT, &quot;lastLogon&quot; TEXT, &quot;lastLogonTimestamp&quot; TEXT, &quot;lockoutTime&quot; TEXT, &quot;logonCount&quot; TEXT, &quot;logonHours&quot; TEXT, &quot;mS-DS-ConsistencyGuid&quot; TEXT, &quot;mail&quot; TEXT, &quot;managedObjects&quot; TEXT, &quot;manager&quot; TEXT, &quot;memberOf&quot; TEXT, &quot;mobile&quot; TEXT, &quot;msDS-FailedInteractiveLogonCount&quot; TEXT, &quot;msDS-FailedInteractiveLogonCountAtLastSuccessfulLogon&quot; TEXT, &quot;msDS-LastFailedInteractiveLogonTime&quot; TEXT, &quot;msDS-LastKnownRDN&quot; TEXT, &quot;msDS-LastSuccessfulInteractiveLogonTime&quot; TEXT, &quot;msDS-SupportedEncryptionTypes&quot; TEXT, &quot;msNPAllowDialin&quot; TEXT, &quot;name&quot; TEXT, &quot;objectCategory&quot; TEXT, &quot;objectClass&quot; TEXT, &quot;objectGUID&quot; TEXT, &quot;objectSid&quot; TEXT, &quot;pager&quot; TEXT, &quot;physicalDeliveryOfficeName&quot; TEXT, &quot;primaryGroupID&quot; TEXT, &quot;pwdLastSet&quot; TEXT, &quot;sAMAccountName&quot; TEXT, &quot;sAMAccountType&quot; TEXT, &quot;scriptPath&quot; TEXT, &quot;servicePrincipalName&quot; TEXT, &quot;showInAdvancedViewOnly&quot; TEXT, &quot;sn&quot; TEXT, &quot;streetAddress&quot; TEXT, &quot;telephoneNumber&quot; TEXT, &quot;thumbnailPhoto&quot; TEXT, &quot;title&quot; TEXT, &quot;uSNChanged&quot; TEXT, &quot;uSNCreated&quot; TEXT, &quot;uid&quot; TEXT, &quot;uidNumber&quot; TEXT, &quot;unixUserPassword&quot; TEXT, &quot;userAccountControl&quot; TEXT, &quot;userCertificate&quot; TEXT, &quot;userParameters&quot; TEXT, &quot;userPrincipalName&quot; TEXT, &quot;userWorkstations&quot; TEXT, &quot;whenChanged&quot; TEXT, &quot;whenCreated&quot; TEXT</span>
+<span class="s2">        );</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ad_computers_staging&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        CREATE TABLE ad_computers_staging (</span>
+<span class="s2">            id SERIAL PRIMARY KEY, &quot;accountExpires&quot; TEXT, &quot;adminCount&quot; TEXT, &quot;badPasswordTime&quot; TEXT, &quot;badPwdCount&quot; TEXT, &quot;cn&quot; TEXT, &quot;codePage&quot; TEXT, &quot;countryCode&quot; TEXT, &quot;dNSHostName&quot; TEXT, &quot;dSCorePropagationData&quot; TEXT, &quot;description&quot; TEXT, &quot;displayName&quot; TEXT, &quot;distinguishedName&quot; TEXT, &quot;instanceType&quot; TEXT, &quot;isCriticalSystemObject&quot; TEXT, &quot;lastLogoff&quot; TEXT, &quot;lastLogon&quot; TEXT, &quot;lastLogonTimestamp&quot; TEXT, &quot;localPolicyFlags&quot; TEXT, &quot;lockoutTime&quot; TEXT, &quot;logonCount&quot; TEXT, &quot;mS-DS-CreatorSID&quot; TEXT, &quot;managedBy&quot; TEXT, &quot;memberOf&quot; TEXT, &quot;msDFSR-ComputerReferenceBL&quot; TEXT, &quot;msDS-GroupMSAMembership&quot; TEXT, &quot;msDS-HostServiceAccount&quot; TEXT, &quot;msDS-HostServiceAccountBL&quot; TEXT, &quot;msDS-KeyCredentialLink&quot; TEXT, &quot;msDS-ManagedPasswordId&quot; TEXT, &quot;msDS-ManagedPasswordInterval&quot; TEXT, &quot;msDS-ManagedPasswordPreviousId&quot; TEXT, &quot;msDS-SupportedEncryptionTypes&quot; TEXT, &quot;name&quot; TEXT, &quot;netbootSCPBL&quot; TEXT, &quot;networkAddress&quot; TEXT, &quot;objectCategory&quot; TEXT, &quot;objectClass&quot; TEXT, &quot;objectGUID&quot; TEXT, &quot;objectSid&quot; TEXT, &quot;operatingSystem&quot; TEXT, &quot;operatingSystemServicePack&quot; TEXT, &quot;operatingSystemVersion&quot; TEXT, &quot;primaryGroupID&quot; TEXT, &quot;pwdLastSet&quot; TEXT, &quot;rIDSetReferences&quot; TEXT, &quot;sAMAccountName&quot; TEXT, &quot;sAMAccountType&quot; TEXT, &quot;serverReferenceBL&quot; TEXT, &quot;servicePrincipalName&quot; TEXT, &quot;uSNChanged&quot; TEXT, &quot;uSNCreated&quot; TEXT, &quot;userAccountControl&quot; TEXT, &quot;userCertificate&quot; TEXT, &quot;whenChanged&quot; TEXT, &quot;whenCreated&quot; TEXT</span>
+<span class="s2">        );</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ad_groups_staging&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        CREATE TABLE ad_groups_staging (</span>
+<span class="s2">            id SERIAL PRIMARY KEY, &quot;adminCount&quot; TEXT, &quot;cn&quot; TEXT, &quot;dSCorePropagationData&quot; TEXT, &quot;description&quot; TEXT, &quot;distinguishedName&quot; TEXT, &quot;groupType&quot; TEXT, &quot;instanceType&quot; TEXT, &quot;isCriticalSystemObject&quot; TEXT, &quot;managedBy&quot; TEXT, &quot;managedObjects&quot; TEXT, &quot;member&quot; TEXT, &quot;memberOf&quot; TEXT, &quot;name&quot; TEXT, &quot;objectCategory&quot; TEXT, &quot;objectClass&quot; TEXT, &quot;objectGUID&quot; TEXT, &quot;objectSid&quot; TEXT, &quot;sAMAccountName&quot; TEXT, &quot;sAMAccountType&quot; TEXT, &quot;systemFlags&quot; TEXT, &quot;uSNChanged&quot; TEXT, &quot;uSNCreated&quot; TEXT, &quot;whenChanged&quot; TEXT, &quot;whenCreated&quot; TEXT</span>
+<span class="s2">        );</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ad_ous_staging&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        CREATE TABLE ad_ous_staging (</span>
+<span class="s2">            id SERIAL PRIMARY KEY, &quot;dSCorePropagationData&quot; TEXT, &quot;description&quot; TEXT, &quot;displayName&quot; TEXT, &quot;distinguishedName&quot; TEXT, &quot;gPLink&quot; TEXT, &quot;gPOptions&quot; TEXT, &quot;instanceType&quot; TEXT, &quot;isCriticalSystemObject&quot; TEXT, &quot;managedBy&quot; TEXT, &quot;name&quot; TEXT, &quot;objectCategory&quot; TEXT, &quot;objectClass&quot; TEXT, &quot;objectGUID&quot; TEXT, &quot;ou&quot; TEXT, &quot;showInAdvancedViewOnly&quot; TEXT, &quot;systemFlags&quot; TEXT, &quot;uSNChanged&quot; TEXT, &quot;uSNCreated&quot; TEXT, &quot;whenChanged&quot; TEXT, &quot;whenCreated&quot; TEXT</span>
+<span class="s2">        );</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
+    
+    <span class="c1"># --- TABELAS DE PRODUÇÃO (Tipos Corretos) ---</span>
+    <span class="s2">&quot;ad_users&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        CREATE TABLE ad_users (</span>
+<span class="s2">            id SERIAL PRIMARY KEY, &quot;accountExpires&quot; TIMESTAMPTZ, &quot;adminCount&quot; INTEGER, &quot;badPasswordTime&quot; TIMESTAMPTZ, &quot;badPwdCount&quot; INTEGER, &quot;c&quot; VARCHAR(255), &quot;cn&quot; VARCHAR(255), &quot;co&quot; VARCHAR(255), &quot;codePage&quot; INTEGER, &quot;company&quot; VARCHAR(255), &quot;countryCode&quot; INTEGER, &quot;dSCorePropagationData&quot; TEXT, &quot;department&quot; VARCHAR(255), &quot;description&quot; TEXT, &quot;directReports&quot; TEXT, &quot;displayName&quot; VARCHAR(255), &quot;distinguishedName&quot; TEXT, &quot;division&quot; VARCHAR(255), &quot;facsimileTelephoneNumber&quot; VARCHAR(255), &quot;givenName&quot; VARCHAR(255), &quot;homePhone&quot; VARCHAR(255), &quot;info&quot; TEXT, &quot;initials&quot; VARCHAR(255), &quot;instanceType&quot; INTEGER, &quot;ipPhone&quot; VARCHAR(255), &quot;isCriticalSystemObject&quot; BOOLEAN, &quot;lastKnownParent&quot; TEXT, &quot;lastLogoff&quot; TIMESTAMPTZ, &quot;lastLogon&quot; TIMESTAMPTZ, &quot;lastLogonTimestamp&quot; TIMESTAMPTZ, &quot;lockoutTime&quot; TIMESTAMPTZ, &quot;logonCount&quot; INTEGER, &quot;logonHours&quot; BYTEA, &quot;mS-DS-ConsistencyGuid&quot; TEXT, &quot;mail&quot; VARCHAR(255), &quot;managedObjects&quot; TEXT, &quot;manager&quot; TEXT, &quot;memberOf&quot; TEXT, &quot;mobile&quot; VARCHAR(255), &quot;msDS-FailedInteractiveLogonCount&quot; INTEGER, &quot;msDS-FailedInteractiveLogonCountAtLastSuccessfulLogon&quot; INTEGER, &quot;msDS-LastFailedInteractiveLogonTime&quot; TIMESTAMPTZ, &quot;msDS-LastKnownRDN&quot; TEXT, &quot;msDS-LastSuccessfulInteractiveLogonTime&quot; TIMESTAMPTZ, &quot;msDS-SupportedEncryptionTypes&quot; INTEGER, &quot;msNPAllowDialin&quot; BOOLEAN, &quot;name&quot; VARCHAR(255), &quot;objectCategory&quot; TEXT, &quot;objectClass&quot; TEXT, &quot;objectGUID&quot; UUID, &quot;objectSid&quot; VARCHAR(255), &quot;pager&quot; VARCHAR(255), &quot;physicalDeliveryOfficeName&quot; VARCHAR(255), &quot;primaryGroupID&quot; INTEGER, &quot;pwdLastSet&quot; TIMESTAMPTZ, &quot;sAMAccountName&quot; VARCHAR(255), &quot;sAMAccountType&quot; INTEGER, &quot;scriptPath&quot; TEXT, &quot;servicePrincipalName&quot; TEXT, &quot;showInAdvancedViewOnly&quot; BOOLEAN, &quot;sn&quot; VARCHAR(255), &quot;streetAddress&quot; TEXT, &quot;telephoneNumber&quot; VARCHAR(255), &quot;thumbnailPhoto&quot; BYTEA, &quot;title&quot; VARCHAR(255), &quot;uSNChanged&quot; BIGINT, &quot;uSNCreated&quot; BIGINT, &quot;uid&quot; VARCHAR(255), &quot;uidNumber&quot; INTEGER, &quot;unixUserPassword&quot; TEXT, &quot;userAccountControl&quot; INTEGER, &quot;userCertificate&quot; TEXT, &quot;userParameters&quot; TEXT, &quot;userPrincipalName&quot; VARCHAR(255), &quot;userWorkstations&quot; TEXT, &quot;whenChanged&quot; TIMESTAMPTZ, &quot;whenCreated&quot; TIMESTAMPTZ</span>
+<span class="s2">        );</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ad_computers&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        CREATE TABLE ad_computers (</span>
+<span class="s2">            id SERIAL PRIMARY KEY, &quot;accountExpires&quot; TIMESTAMPTZ, &quot;adminCount&quot; INTEGER, &quot;badPasswordTime&quot; TIMESTAMPTZ, &quot;badPwdCount&quot; INTEGER, &quot;cn&quot; VARCHAR(255), &quot;codePage&quot; INTEGER, &quot;countryCode&quot; INTEGER, &quot;dNSHostName&quot; VARCHAR(255), &quot;dSCorePropagationData&quot; TIMESTAMPTZ, &quot;description&quot; TEXT, &quot;displayName&quot; VARCHAR(255), &quot;distinguishedName&quot; TEXT, &quot;instanceType&quot; INTEGER, &quot;isCriticalSystemObject&quot; BOOLEAN, &quot;lastLogoff&quot; TIMESTAMPTZ, &quot;lastLogon&quot; TIMESTAMPTZ, &quot;lastLogonTimestamp&quot; TIMESTAMPTZ, &quot;localPolicyFlags&quot; INTEGER, &quot;lockoutTime&quot; TIMESTAMPTZ, &quot;logonCount&quot; INTEGER, &quot;mS-DS-CreatorSID&quot; TEXT, &quot;managedBy&quot; TEXT, &quot;memberOf&quot; TEXT, &quot;msDFSR-ComputerReferenceBL&quot; TEXT, &quot;msDS-GroupMSAMembership&quot; TEXT, &quot;msDS-HostServiceAccount&quot; TEXT, &quot;msDS-HostServiceAccountBL&quot; TEXT, &quot;msDS-KeyCredentialLink&quot; TEXT, &quot;msDS-ManagedPasswordId&quot; TEXT, &quot;msDS-ManagedPasswordInterval&quot; TEXT, &quot;msDS-ManagedPasswordPreviousId&quot; TEXT, &quot;msDS-SupportedEncryptionTypes&quot; INTEGER, &quot;name&quot; VARCHAR(255), &quot;netbootSCPBL&quot; TEXT, &quot;networkAddress&quot; TEXT, &quot;objectCategory&quot; TEXT, &quot;objectClass&quot; TEXT, &quot;objectGUID&quot; UUID, &quot;objectSid&quot; VARCHAR(255), &quot;operatingSystem&quot; VARCHAR(255), &quot;operatingSystemServicePack&quot; VARCHAR(255), &quot;operatingSystemVersion&quot; VARCHAR(255), &quot;primaryGroupID&quot; INTEGER, &quot;pwdLastSet&quot; TIMESTAMPTZ, &quot;rIDSetReferences&quot; TEXT, &quot;sAMAccountName&quot; VARCHAR(255), &quot;sAMAccountType&quot; INTEGER, &quot;serverReferenceBL&quot; TEXT, &quot;servicePrincipalName&quot; TEXT, &quot;uSNChanged&quot; BIGINT, &quot;uSNCreated&quot; BIGINT, &quot;userAccountControl&quot; INTEGER, &quot;userCertificate&quot; TEXT, &quot;whenChanged&quot; TIMESTAMPTZ, &quot;whenCreated&quot; TIMESTAMPTZ</span>
+<span class="s2">        );</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ad_groups&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        CREATE TABLE ad_groups (</span>
+<span class="s2">            id SERIAL PRIMARY KEY, &quot;adminCount&quot; INTEGER, &quot;cn&quot; VARCHAR(255), &quot;dSCorePropagationData&quot; TIMESTAMPTZ, &quot;description&quot; TEXT, &quot;distinguishedName&quot; TEXT, &quot;groupType&quot; INTEGER, &quot;instanceType&quot; INTEGER, &quot;isCriticalSystemObject&quot; BOOLEAN, &quot;managedBy&quot; TEXT, &quot;managedObjects&quot; TEXT, &quot;member&quot; TEXT, &quot;memberOf&quot; TEXT, &quot;name&quot; VARCHAR(255), &quot;objectCategory&quot; TEXT, &quot;objectClass&quot; TEXT, &quot;objectGUID&quot; UUID, &quot;objectSid&quot; VARCHAR(255), &quot;sAMAccountName&quot; VARCHAR(255), &quot;sAMAccountType&quot; INTEGER, &quot;systemFlags&quot; INTEGER, &quot;uSNChanged&quot; BIGINT, &quot;uSNCreated&quot; BIGINT, &quot;whenChanged&quot; TIMESTAMPTZ, &quot;whenCreated&quot; TIMESTAMPTZ</span>
+<span class="s2">        );</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ad_ous&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        CREATE TABLE ad_ous (</span>
+<span class="s2">            id SERIAL PRIMARY KEY, &quot;dSCorePropagationData&quot; TEXT, &quot;description&quot; TEXT, &quot;displayName&quot; VARCHAR(255), &quot;distinguishedName&quot; TEXT, &quot;gPLink&quot; TEXT, &quot;gPOptions&quot; VARCHAR(255), &quot;instanceType&quot; INTEGER, &quot;isCriticalSystemObject&quot; BOOLEAN, &quot;managedBy&quot; TEXT, &quot;name&quot; VARCHAR(255), &quot;objectCategory&quot; TEXT, &quot;objectClass&quot; TEXT, &quot;objectGUID&quot; UUID, &quot;ou&quot; VARCHAR(255), &quot;showInAdvancedViewOnly&quot; BOOLEAN, &quot;systemFlags&quot; INTEGER, &quot;uSNChanged&quot; BIGINT, &quot;uSNCreated&quot; BIGINT, &quot;whenChanged&quot; TIMESTAMPTZ, &quot;whenCreated&quot; TIMESTAMPTZ</span>
+<span class="s2">        );</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
+    
+    <span class="c1"># --- TABELA DE LOG DE ERROS  ---</span>
+    <span class="s2">&quot;etl_error_log&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        CREATE TABLE etl_error_log (</span>
+<span class="s2">            log_id SERIAL PRIMARY KEY,</span>
+<span class="s2">            table_name VARCHAR(255),</span>
+<span class="s2">            staging_row_id INTEGER,</span>
+<span class="s2">            error_message TEXT,</span>
+<span class="s2">            error_timestamp TIMESTAMPTZ DEFAULT NOW(),</span>
+<span class="s2">            raw_data JSONB</span>
+<span class="s2">        );</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+<span class="p">}</span>
+
+<div class="viewcode-block" id="preparar_banco_dados">
+<a class="viewcode-back" href="../preparar_banco_dados.html#preparar_banco_dados.preparar_banco_dados">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">preparar_banco_dados</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Executa a Etapa 4 do pipeline:</span>
+<span class="sd">    1. Conecta ao PostgreSQL.</span>
+<span class="sd">    2. Recria todas as tabelas de Staging e Produção (com id SERIAL PK).</span>
+<span class="sd">    3. Recria a tabela de Log de Erros (com staging_row_id).</span>
+<span class="sd">    4. Executa o &#39;migrate&#39; do Django para criar as tabelas de Relatório.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;INICIANDO ETAPA 4: PREPARAÇÃO DO BANCO DE DADOS&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+    
+    <span class="n">conn</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># ETAPA 4.1: Conectar ao banco de dados</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[ETAPA 4.1] Conectando ao banco de dados em </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DB_HOST&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="n">host</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DB_HOST&#39;</span><span class="p">),</span>
+            <span class="n">database</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DB_NAME&#39;</span><span class="p">),</span>
+            <span class="n">user</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DB_USER&#39;</span><span class="p">),</span>
+            <span class="n">password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DB_PASS&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SUCESSO: Conexão com o PostgreSQL estabelecida.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># ETAPA 4.2: Recriar as tabelas (Staging, Produção, Log)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[ETAPA 4.2] Recriando as tabelas de dados e de log...&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">TABLE_NAMES</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  -&gt; Processando tabela: &#39;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+            
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     - Removendo tabela antiga (se existir)...&quot;</span><span class="p">)</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;DROP TABLE IF EXISTS &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot; CASCADE;&#39;</span><span class="p">)</span>
+            
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     - Criando nova tabela...&quot;</span><span class="p">)</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">SQL_COMMANDS</span><span class="p">[</span><span class="n">table_name</span><span class="p">])</span>
+            
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SUCESSO: Tabelas de dados e de log recriadas.&quot;</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">ERRO CRÍTICO: Não foi possível conectar ao banco de dados.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&gt; Verifique se o IP, porta, usuário e senha no .env estão corretos.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;-&gt; Detalhes do erro: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Ocorreu um erro inesperado durante a execução do SQL: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">conn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Conexão com o PostgreSQL (via psycopg2) foi encerrada.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># ETAPA 4.3: Executar o &#39;migrate&#39; do Django</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[ETAPA 4.3] Executando o Django &#39;migrate&#39; para criar/atualizar as tabelas do sistema...&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Garante que estamos usando o python3 do ambiente virtual</span>
+        <span class="n">python_executable</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">prefix</span><span class="p">,</span> <span class="s1">&#39;bin&#39;</span><span class="p">,</span> <span class="s1">&#39;python3&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">python_executable</span><span class="p">):</span>
+             <span class="n">python_executable</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">prefix</span><span class="p">,</span> <span class="s1">&#39;bin&#39;</span><span class="p">,</span> <span class="s1">&#39;python&#39;</span><span class="p">)</span> <span class="c1"># Fallback para &#39;python&#39;</span>
+        
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">python_executable</span><span class="p">,</span> <span class="s2">&quot;manage.py&quot;</span><span class="p">,</span> <span class="s2">&quot;migrate&quot;</span><span class="p">],</span>
+            <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SUCESSO: Tabelas do Django e de relatórios criadas/atualizadas.&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">ERRO CRÍTICE ao executar o &#39;migrate&#39; do Django:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">ERRO CRÍTICO: Não foi possível encontrar o executável &#39;</span><span class="si">{</span><span class="n">python_executable</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Certifique-se de que o ambiente virtual está ativo e o Django está instalado.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ETAPA 4: PREPARAÇÃO DO BANCO DE DADOS CONCLUÍDA COM SUCESSO!&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;INFO: Carregando configurações do arquivo .env...&quot;</span><span class="p">)</span>
+    <span class="n">load_dotenv</span><span class="p">()</span>
+    
+    <span class="n">db_vars</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;DB_HOST&#39;</span><span class="p">,</span> <span class="s1">&#39;DB_NAME&#39;</span><span class="p">,</span> <span class="s1">&#39;DB_USER&#39;</span><span class="p">,</span> <span class="s1">&#39;DB_PASS&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">var</span><span class="p">)</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">db_vars</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">ERRO: Credenciais do banco de dados não encontradas no .env.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">preparar_banco_dados</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Sergio Santana dos Santos.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

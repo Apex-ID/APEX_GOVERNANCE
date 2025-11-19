@@ -2,7 +2,6 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ titulo }}</title>
     <style>
         body { font-family: sans-serif; margin: 40px; background-color: #f4f7f6; }
@@ -10,18 +9,21 @@
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         
         /* Botões */
-        .btn { display: block; width: 100%; color: white; padding: 12px; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 10px; font-size: 15px; transition: 0.3s; }
+        .btn { display: block; width: 100%; color: white; padding: 12px; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 10px; font-size: 15px; transition: 0.3s; text-decoration: none; text-align: center; }
         .btn:hover { opacity: 0.9; }
+        
         .btn-success { background-color: #28a745; }
         .btn-info { background-color: #17a2b8; }
         .btn-warning { background-color: #ffc107; color: #333; }
         .btn-danger { background-color: #dc3545; }
         .btn-dark { background-color: #343a40; }
-        
+        .btn-purple { background-color: #6f42c1; }
+        .btn-pink { background-color: #e83e8c; }
+
         /* Estilos do Histórico */
         .link-card { text-decoration: none; color: inherit; display: block; }
         .relatorio-metricas { border: 1px solid #e0e0e0; border-radius: 5px; margin-bottom: 15px; transition: transform 0.2s, box-shadow 0.2s; background-color: #fff; }
-        .relatorio-metricas:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-color: #bbb; }
+        .relatorio-metricas:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-color: #bbb; cursor: pointer; }
         
         .execucao-header { background-color: #f8f9fa; padding: 10px 15px; border-bottom: 1px solid #e0e0e0; font-size: 0.9em; color: #555; display: flex; justify-content: space-between; }
         .execucao-body { padding: 15px; font-size: 0.95em; }
@@ -29,24 +31,19 @@
         .status-sucesso { color: #28a745; font-weight: bold; }
         .status-falhou { color: #dc3545; font-weight: bold; }
         
-        /* Mensagens */
         .messages { list-style: none; padding: 0; margin-bottom: 20px; }
         .messages li { padding: 15px; border-radius: 5px; margin-bottom: 10px; }
         .messages .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         
-        /* Navegação */
         .nav-link { margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; }
         .nav-link a { color: #007bff; font-weight: bold; text-decoration: none; }
-        .nav-link a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
     <div class="container">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h1 style="margin: 0;">{{ titulo }}</h1>
-            <a href="{% url 'painel_de_controle' %}" class="btn btn-dark" style="width: auto; margin: 0; padding: 10px 20px;">
-                &larr; Voltar para ETL
-            </a>
+            <a href="{% url 'painel_de_controle' %}" class="btn btn-dark" style="width: auto; margin: 0; padding: 10px 20px;">&larr; Voltar para ETL</a>
         </div>
         <hr>
 
@@ -63,22 +60,81 @@
             <div class="grid">
                 <div>
                     <h3>Produção (Dados Limpos)</h3>
-                    <p>Métricas de negócio sobre os dados limpos.</p>
                     <button type="submit" name="acao_analise_completude_usuarios" class="btn btn-success">1. Analisar Completude (Usuários)</button>
                     <button type="submit" name="acao_analise_unicidade_producao" class="btn btn-dark">2. Análise de Unicidade</button>
+                    <button type="submit" name="acao_regras_producao" class="btn btn-purple">3. Regras de Negócio (Auditoria)</button>
                 </div>
+                
                 <div>
                     <h3>Staging (Dados Brutos)</h3>
-                    <p>Métricas de qualidade sobre os dados antes da transformação.</p>
                     <button type="submit" name="acao_analise_completude_geral" class="btn btn-info">1. Completude Geral (Células)</button>
                     <button type="submit" name="acao_analise_validade" class="btn btn-warning">2. Validade de Formato</button>
                     <button type="submit" name="acao_analise_unicidade_staging" class="btn btn-danger">3. Análise de Unicidade</button>
+                    <button type="submit" name="acao_regras_staging" class="btn btn-purple">4. Regras de Negócio (Impacto)</button>
                 </div>
             </div>
         </form>
+        
+        <div style="margin-top: 20px; text-align: center;">
+             <a href="{% url 'configuracao_unicidade' %}" class="btn btn-pink" style="display:inline-block; width: auto; padding: 12px 30px;">
+                5. Nova Análise Personalizada (Multicoluna)
+            </a>
+        </div>
 
         <h2 style="margin-top: 40px; border-bottom: 2px solid #eee; padding-bottom: 10px;">Histórico de Execuções</h2>
 
+        <h4>Análises Personalizadas</h4>
+        {% for rel in ultimos_relatorios_personalizados %}
+            <a href="{% url 'detalhe_relatorio_personalizado' pk=rel.id %}" class="link-card">
+                <div class="relatorio-metricas">
+                    <div class="execucao-header">
+                        <strong>{{ rel.tabela_analisada }}</strong>
+                        <span>{{ rel.timestamp_inicio }}</span>
+                    </div>
+                    <div class="execucao-body">
+                        Colunas: <strong>{{ rel.colunas_combinadas }}</strong><br>
+                        Unicidade: <span class="{% if rel.percentual_unicidade == 100 %}status-sucesso{% else %}status-falhou{% endif %}">{{ rel.percentual_unicidade|floatformat:2 }}%</span> | 
+                        Duplicatas: {{ rel.registros_duplicados }}
+                        <br><small style="color: #007bff;">Ver detalhes...</small>
+                    </div>
+                </div>
+            </a>
+        {% empty %}<p style="color: #777;">Nenhuma análise personalizada.</p>{% endfor %}
+
+        <h4>Regras de Negócio (Produção)</h4>
+        {% for rel in ultimas_regras_producao %}
+            <a href="{% url 'detalhe_relatorio_regras' pk=rel.id %}" class="link-card">
+                <div class="relatorio-metricas">
+                    <div class="execucao-header">
+                        <strong>{{ rel.nome_regra }}</strong> ({{ rel.tabela_analisada }})
+                        <span>{{ rel.timestamp_inicio }}</span>
+                    </div>
+                    <div class="execucao-body">
+                        Falhas: <span class="{% if rel.qtd_falhas > 0 %}status-falhou{% else %}status-sucesso{% endif %}">{{ rel.qtd_falhas }}</span> |
+                        Taxa: {{ rel.percentual_falha|floatformat:2 }}%
+                        <br><small style="color: #555;">{{ rel.descricao_impacto|truncatechars:80 }}</small>
+                    </div>
+                </div>
+            </a>
+        {% empty %}<p style="color: #777;">Nenhum relatório gerado.</p>{% endfor %}
+
+        <h4>Regras de Negócio (Staging)</h4>
+        {% for rel in ultimas_regras_staging %}
+            <a href="{% url 'detalhe_relatorio_regras' pk=rel.id %}" class="link-card">
+                <div class="relatorio-metricas">
+                    <div class="execucao-header">
+                        <strong>{{ rel.nome_regra }}</strong> ({{ rel.tabela_analisada }})
+                        <span>{{ rel.timestamp_inicio }}</span>
+                    </div>
+                    <div class="execucao-body">
+                        Falhas: <span class="{% if rel.qtd_falhas > 0 %}status-falhou{% else %}status-sucesso{% endif %}">{{ rel.qtd_falhas }}</span> |
+                        Taxa: {{ rel.percentual_falha|floatformat:2 }}%
+                    </div>
+                </div>
+            </a>
+        {% empty %}<p style="color: #777;">Nenhum relatório gerado.</p>{% endfor %}
+
+        <hr style="margin-top: 30px;">
         <h4>Unicidade (Produção)</h4>
         {% for rel in ultimos_relatorios_unicidade_producao %}
             <a href="{% url 'detalhe_relatorio_unicidade' pk=rel.id %}" class="link-card">
@@ -90,11 +146,11 @@
                     <div class="execucao-body">
                         Unicidade Média: <span class="{% if rel.media_unicidade == 100 %}status-sucesso{% else %}status-falhou{% endif %}">{{ rel.media_unicidade|floatformat:2 }}%</span> | 
                         Colunas c/ Duplicatas: {{ rel.qtd_colunas_com_duplicatas }}
-                        <br><small style="color: #007bff; margin-top: 5px; display: block;">Clique para ver detalhes e baixar PDF...</small>
+                        <br><small style="color: #007bff;">Clique para ver detalhes...</small>
                     </div>
                 </div>
             </a>
-        {% empty %}<p style="color: #777;">Nenhum relatório de unicidade (produção) gerado ainda.</p>{% endfor %}
+        {% empty %}<p style="color: #777;">Nenhum relatório gerado.</p>{% endfor %}
 
         <h4>Unicidade (Staging)</h4>
         {% for rel in ultimos_relatorios_unicidade_staging %}
@@ -107,12 +163,13 @@
                     <div class="execucao-body">
                         Unicidade Média: <span class="{% if rel.media_unicidade == 100 %}status-sucesso{% else %}status-falhou{% endif %}">{{ rel.media_unicidade|floatformat:2 }}%</span> | 
                         Colunas c/ Duplicatas: {{ rel.qtd_colunas_com_duplicatas }}
-                        <br><small style="color: #007bff; margin-top: 5px; display: block;">Clique para ver detalhes e baixar PDF...</small>
+                        <br><small style="color: #007bff;">Clique para ver detalhes...</small>
                     </div>
                 </div>
             </a>
-        {% empty %}<p style="color: #777;">Nenhum relatório de unicidade (staging) gerado ainda.</p>{% endfor %}
+        {% empty %}<p style="color: #777;">Nenhum relatório gerado.</p>{% endfor %}
 
+        <hr style="margin-top: 30px;">
         <h4>Validade de Formato (Staging)</h4>
         {% for rel in ultimos_relatorios_validade %}
             <a href="{% url 'detalhe_relatorio_validade' pk=rel.id %}" class="link-card">
@@ -124,11 +181,11 @@
                     <div class="execucao-body">
                         Validade: <span class="{% if rel.percentual_validade > 99 %}status-sucesso{% else %}status-falhou{% endif %}">{{ rel.percentual_validade|floatformat:2 }}%</span> | 
                         Inválidas: {{ rel.total_celulas_invalidas }}
-                        <br><small style="color: #007bff; margin-top: 5px; display: block;">Clique para ver detalhes e baixar PDF...</small>
+                        <br><small style="color: #007bff;">Clique para ver detalhes...</small>
                     </div>
                 </div>
             </a>
-        {% empty %}<p style="color: #777;">Nenhum relatório de validade gerado ainda.</p>{% endfor %}
+        {% empty %}<p style="color: #777;">Nenhum relatório gerado.</p>{% endfor %}
 
         <h4>Completude Geral (Staging)</h4>
         {% for rel in ultimos_relatorios_gerais %}
@@ -141,11 +198,11 @@
                     <div class="execucao-body">
                         Completude: <span class="{% if rel.percentual_completude_geral > 90 %}status-sucesso{% else %}status-falhou{% endif %}">{{ rel.percentual_completude_geral|floatformat:2 }}%</span> | 
                         Colunas c/ Vazios: {{ rel.relatorio_colunas_vazias|length }}
-                        <br><small style="color: #007bff; margin-top: 5px; display: block;">Clique para ver detalhes e baixar PDF...</small>
+                        <br><small style="color: #007bff;">Clique para ver detalhes...</small>
                     </div>
                 </div>
             </a>
-        {% empty %}<p style="color: #777;">Nenhum relatório de análise geral gerado ainda.</p>{% endfor %}
+        {% empty %}<p style="color: #777;">Nenhum relatório gerado.</p>{% endfor %}
 
         <h4>Completude Específica (Usuários Produção)</h4>
         {% for rel in ultimos_relatorios_usuarios %}

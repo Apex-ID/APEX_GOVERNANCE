@@ -1,0 +1,1033 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>analises_simples package &mdash; APEX_GOVERNANCE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=c0c8e3fa"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="analises_simples.logica_de_analise package" href="analises_simples.logica_de_analise.html" />
+    <link rel="prev" title="analises_relacionais.migrations package" href="analises_relacionais.migrations.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            APEX_GOVERNANCE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Pacotes e Módulos</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">APEX_GOVERNANCE</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="analises_relacionais.html">analises_relacionais package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">analises_simples package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analises_simples.logica_de_analise.html">analises_simples.logica_de_analise package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analises_simples.migrations.html">analises_simples.migrations package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="apex_project.html">apex_project package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="carga_manual.html">carga_manual module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="importador_dinamico.html">importador_dinamico package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preparar_banco_dados.html">preparar_banco_dados module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qualidade_ad.html">qualidade_ad package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transformacao_manual.html">transformacao_manual module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">APEX_GOVERNANCE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">APEX_GOVERNANCE</a></li>
+      <li class="breadcrumb-item active">analises_simples package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/analises_simples.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="analises-simples-package">
+<h1>analises_simples package<a class="headerlink" href="#analises-simples-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="analises_simples.logica_de_analise.html">analises_simples.logica_de_analise package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.logica_de_analise.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.logica_de_analise.html#module-analises_simples.logica_de_analise.logica_unicidade">analises_simples.logica_de_analise.logica_unicidade module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analises_simples.logica_de_analise.html#analises_simples.logica_de_analise.logica_unicidade.analisar_unicidade_coluna"><code class="docutils literal notranslate"><span class="pre">analisar_unicidade_coluna()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="analises_simples.logica_de_analise.html#analises_simples.logica_de_analise.logica_unicidade.analisar_unicidade_multicoluna"><code class="docutils literal notranslate"><span class="pre">analisar_unicidade_multicoluna()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="analises_simples.logica_de_analise.html#analises_simples.logica_de_analise.logica_unicidade.analisar_unicidade_tabela_inteira"><code class="docutils literal notranslate"><span class="pre">analisar_unicidade_tabela_inteira()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.logica_de_analise.html#module-analises_simples.logica_de_analise.logica_validade">analises_simples.logica_de_analise.logica_validade module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analises_simples.logica_de_analise.html#analises_simples.logica_de_analise.logica_validade.executar_analise_de_validade"><code class="docutils literal notranslate"><span class="pre">executar_analise_de_validade()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="analises_simples.logica_de_analise.html#analises_simples.logica_de_analise.logica_validade.validar_celula"><code class="docutils literal notranslate"><span class="pre">validar_celula()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.logica_de_analise.html#module-analises_simples.logica_de_analise.regras_negocio">analises_simples.logica_de_analise.regras_negocio module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.logica_de_analise.html#module-analises_simples.logica_de_analise">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="analises_simples.migrations.html">analises_simples.migrations package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.migrations.html#module-analises_simples.migrations.0001_initial">analises_simples.migrations.0001_initial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0001_initial.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0001_initial.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0001_initial.Migration.initial"><code class="docutils literal notranslate"><span class="pre">Migration.initial</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0001_initial.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.migrations.html#module-analises_simples.migrations.0002_relatoriocompletudegeral">analises_simples.migrations.0002_relatoriocompletudegeral module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0002_relatoriocompletudegeral.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0002_relatoriocompletudegeral.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0002_relatoriocompletudegeral.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.migrations.html#module-analises_simples.migrations.0003_rename_timestamp_execucao_relatoriocompletudegeral_timestamp_inicio_and_more">analises_simples.migrations.0003_rename_timestamp_execucao_relatoriocompletudegeral_timestamp_inicio_and_more module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0003_rename_timestamp_execucao_relatoriocompletudegeral_timestamp_inicio_and_more.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0003_rename_timestamp_execucao_relatoriocompletudegeral_timestamp_inicio_and_more.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0003_rename_timestamp_execucao_relatoriocompletudegeral_timestamp_inicio_and_more.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.migrations.html#module-analises_simples.migrations.0004_relatoriocompletudegeral_tabela_analisada">analises_simples.migrations.0004_relatoriocompletudegeral_tabela_analisada module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0004_relatoriocompletudegeral_tabela_analisada.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0004_relatoriocompletudegeral_tabela_analisada.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0004_relatoriocompletudegeral_tabela_analisada.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.migrations.html#module-analises_simples.migrations.0005_relatoriovalidadeformato">analises_simples.migrations.0005_relatoriovalidadeformato module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0005_relatoriovalidadeformato.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0005_relatoriovalidadeformato.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0005_relatoriovalidadeformato.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.migrations.html#module-analises_simples.migrations.0006_relatoriounicidade">analises_simples.migrations.0006_relatoriounicidade module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0006_relatoriounicidade.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0006_relatoriounicidade.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0006_relatoriounicidade.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.migrations.html#module-analises_simples.migrations.0007_rename_timestamp_execucao_relatoriocompletude_timestamp_inicio_and_more">analises_simples.migrations.0007_rename_timestamp_execucao_relatoriocompletude_timestamp_inicio_and_more module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0007_rename_timestamp_execucao_relatoriocompletude_timestamp_inicio_and_more.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0007_rename_timestamp_execucao_relatoriocompletude_timestamp_inicio_and_more.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0007_rename_timestamp_execucao_relatoriocompletude_timestamp_inicio_and_more.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.migrations.html#module-analises_simples.migrations.0008_relatoriounicidadegeral">analises_simples.migrations.0008_relatoriounicidadegeral module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0008_relatoriounicidadegeral.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0008_relatoriounicidadegeral.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0008_relatoriounicidadegeral.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.migrations.html#module-analises_simples.migrations.0009_relatorioregranegocio">analises_simples.migrations.0009_relatorioregranegocio module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0009_relatorioregranegocio.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0009_relatorioregranegocio.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0009_relatorioregranegocio.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.migrations.html#module-analises_simples.migrations.0010_relatoriounicidadepersonalizada">analises_simples.migrations.0010_relatoriounicidadepersonalizada module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0010_relatoriounicidadepersonalizada.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0010_relatoriounicidadepersonalizada.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="analises_simples.migrations.html#analises_simples.migrations.0010_relatoriounicidadepersonalizada.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analises_simples.migrations.html#module-analises_simples.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-analises_simples.admin">
+<span id="analises-simples-admin-module"></span><h2>analises_simples.admin module<a class="headerlink" href="#module-analises_simples.admin" title="Link to this heading"></a></h2>
+</section>
+<section id="module-analises_simples.apps">
+<span id="analises-simples-apps-module"></span><h2>analises_simples.apps module<a class="headerlink" href="#module-analises_simples.apps" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="analises_simples.apps.AnalisesSimplesConfig">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analises_simples.apps.</span></span><span class="sig-name descname"><span class="pre">AnalisesSimplesConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_module</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analises_simples/apps.html#AnalisesSimplesConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analises_simples.apps.AnalisesSimplesConfig" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AppConfig</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.apps.AnalisesSimplesConfig.default_auto_field">
+<span class="sig-name descname"><span class="pre">default_auto_field</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'django.db.models.BigAutoField'</span></em><a class="headerlink" href="#analises_simples.apps.AnalisesSimplesConfig.default_auto_field" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.apps.AnalisesSimplesConfig.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'analises_simples'</span></em><a class="headerlink" href="#analises_simples.apps.AnalisesSimplesConfig.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-analises_simples.models">
+<span id="analises-simples-models-module"></span><h2>analises_simples.models module<a class="headerlink" href="#module-analises_simples.models" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletude">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analises_simples.models.</span></span><span class="sig-name descname"><span class="pre">RelatorioCompletude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp_inicio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_usuarios</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sem_gerente</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sem_departamento</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sem_cargo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contato_completo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perc_sem_gerente</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perc_sem_departamento</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perc_sem_cargo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perc_contato_completo</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analises_simples/models.html#RelatorioCompletude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analises_simples.models.RelatorioCompletude" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletude.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletude.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletude.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletude.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletude.contato_completo">
+<span class="sig-name descname"><span class="pre">contato_completo</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletude.contato_completo" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletude.get_next_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_next_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analises_simples.models.RelatorioCompletude.get_next_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletude.get_previous_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_previous_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analises_simples.models.RelatorioCompletude.get_previous_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletude.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletude.id" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletude.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#analises_simples.models.RelatorioCompletude.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletude.perc_contato_completo">
+<span class="sig-name descname"><span class="pre">perc_contato_completo</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletude.perc_contato_completo" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletude.perc_sem_cargo">
+<span class="sig-name descname"><span class="pre">perc_sem_cargo</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletude.perc_sem_cargo" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletude.perc_sem_departamento">
+<span class="sig-name descname"><span class="pre">perc_sem_departamento</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletude.perc_sem_departamento" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletude.perc_sem_gerente">
+<span class="sig-name descname"><span class="pre">perc_sem_gerente</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletude.perc_sem_gerente" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletude.sem_cargo">
+<span class="sig-name descname"><span class="pre">sem_cargo</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletude.sem_cargo" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletude.sem_departamento">
+<span class="sig-name descname"><span class="pre">sem_departamento</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletude.sem_departamento" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletude.sem_gerente">
+<span class="sig-name descname"><span class="pre">sem_gerente</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletude.sem_gerente" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletude.timestamp_inicio">
+<span class="sig-name descname"><span class="pre">timestamp_inicio</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletude.timestamp_inicio" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletude.total_usuarios">
+<span class="sig-name descname"><span class="pre">total_usuarios</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletude.total_usuarios" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletudeGeral">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analises_simples.models.</span></span><span class="sig-name descname"><span class="pre">RelatorioCompletudeGeral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp_inicio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp_fim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tabela_analisada</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_registros</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_colunas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_celulas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_celulas_preenchidas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentual_completude_geral</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relatorio_colunas_vazias</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analises_simples/models.html#RelatorioCompletudeGeral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analises_simples.models.RelatorioCompletudeGeral" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletudeGeral.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletudeGeral.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletudeGeral.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletudeGeral.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletudeGeral.get_next_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_next_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analises_simples.models.RelatorioCompletudeGeral.get_next_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletudeGeral.get_previous_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_previous_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analises_simples.models.RelatorioCompletudeGeral.get_previous_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletudeGeral.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletudeGeral.id" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletudeGeral.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#analises_simples.models.RelatorioCompletudeGeral.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletudeGeral.percentual_completude_geral">
+<span class="sig-name descname"><span class="pre">percentual_completude_geral</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletudeGeral.percentual_completude_geral" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletudeGeral.relatorio_colunas_vazias">
+<span class="sig-name descname"><span class="pre">relatorio_colunas_vazias</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletudeGeral.relatorio_colunas_vazias" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletudeGeral.tabela_analisada">
+<span class="sig-name descname"><span class="pre">tabela_analisada</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletudeGeral.tabela_analisada" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletudeGeral.timestamp_fim">
+<span class="sig-name descname"><span class="pre">timestamp_fim</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletudeGeral.timestamp_fim" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletudeGeral.timestamp_inicio">
+<span class="sig-name descname"><span class="pre">timestamp_inicio</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletudeGeral.timestamp_inicio" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletudeGeral.total_celulas">
+<span class="sig-name descname"><span class="pre">total_celulas</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletudeGeral.total_celulas" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletudeGeral.total_celulas_preenchidas">
+<span class="sig-name descname"><span class="pre">total_celulas_preenchidas</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletudeGeral.total_celulas_preenchidas" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletudeGeral.total_colunas">
+<span class="sig-name descname"><span class="pre">total_colunas</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletudeGeral.total_colunas" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioCompletudeGeral.total_registros">
+<span class="sig-name descname"><span class="pre">total_registros</span></span><a class="headerlink" href="#analises_simples.models.RelatorioCompletudeGeral.total_registros" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioRegraNegocio">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analises_simples.models.</span></span><span class="sig-name descname"><span class="pre">RelatorioRegraNegocio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analises_simples/models.html#RelatorioRegraNegocio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analises_simples.models.RelatorioRegraNegocio" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Armazena o resultado de uma Regra de Negócio específica aplicada
+a uma tabela (Staging ou Produção).</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioRegraNegocio.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#analises_simples.models.RelatorioRegraNegocio.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioRegraNegocio.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#analises_simples.models.RelatorioRegraNegocio.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioRegraNegocio.descricao_impacto">
+<span class="sig-name descname"><span class="pre">descricao_impacto</span></span><a class="headerlink" href="#analises_simples.models.RelatorioRegraNegocio.descricao_impacto" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioRegraNegocio.dimensao">
+<span class="sig-name descname"><span class="pre">dimensao</span></span><a class="headerlink" href="#analises_simples.models.RelatorioRegraNegocio.dimensao" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioRegraNegocio.exemplos_falhas">
+<span class="sig-name descname"><span class="pre">exemplos_falhas</span></span><a class="headerlink" href="#analises_simples.models.RelatorioRegraNegocio.exemplos_falhas" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioRegraNegocio.get_next_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_next_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analises_simples.models.RelatorioRegraNegocio.get_next_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioRegraNegocio.get_previous_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_previous_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analises_simples.models.RelatorioRegraNegocio.get_previous_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioRegraNegocio.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#analises_simples.models.RelatorioRegraNegocio.id" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioRegraNegocio.nome_regra">
+<span class="sig-name descname"><span class="pre">nome_regra</span></span><a class="headerlink" href="#analises_simples.models.RelatorioRegraNegocio.nome_regra" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioRegraNegocio.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#analises_simples.models.RelatorioRegraNegocio.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioRegraNegocio.percentual_falha">
+<span class="sig-name descname"><span class="pre">percentual_falha</span></span><a class="headerlink" href="#analises_simples.models.RelatorioRegraNegocio.percentual_falha" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioRegraNegocio.qtd_falhas">
+<span class="sig-name descname"><span class="pre">qtd_falhas</span></span><a class="headerlink" href="#analises_simples.models.RelatorioRegraNegocio.qtd_falhas" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioRegraNegocio.qtd_total_registros">
+<span class="sig-name descname"><span class="pre">qtd_total_registros</span></span><a class="headerlink" href="#analises_simples.models.RelatorioRegraNegocio.qtd_total_registros" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioRegraNegocio.tabela_analisada">
+<span class="sig-name descname"><span class="pre">tabela_analisada</span></span><a class="headerlink" href="#analises_simples.models.RelatorioRegraNegocio.tabela_analisada" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioRegraNegocio.timestamp_inicio">
+<span class="sig-name descname"><span class="pre">timestamp_inicio</span></span><a class="headerlink" href="#analises_simples.models.RelatorioRegraNegocio.timestamp_inicio" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioRegraNegocio.tipo_tabela">
+<span class="sig-name descname"><span class="pre">tipo_tabela</span></span><a class="headerlink" href="#analises_simples.models.RelatorioRegraNegocio.tipo_tabela" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidade">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analises_simples.models.</span></span><span class="sig-name descname"><span class="pre">RelatorioUnicidade</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp_inicio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tabela_analisada</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coluna_analisada</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_registros</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">registros_vazios</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">registros_preenchidos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">registros_unicos_preenchidos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentual_unicidade</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analises_simples/models.html#RelatorioUnicidade"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analises_simples.models.RelatorioUnicidade" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidade.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidade.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidade.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidade.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidade.coluna_analisada">
+<span class="sig-name descname"><span class="pre">coluna_analisada</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidade.coluna_analisada" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidade.duplicatas_encontradas">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">duplicatas_encontradas</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidade.duplicatas_encontradas" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidade.get_next_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_next_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidade.get_next_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidade.get_previous_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_previous_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidade.get_previous_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidade.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidade.id" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidade.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#analises_simples.models.RelatorioUnicidade.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidade.percentual_unicidade">
+<span class="sig-name descname"><span class="pre">percentual_unicidade</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidade.percentual_unicidade" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidade.registros_preenchidos">
+<span class="sig-name descname"><span class="pre">registros_preenchidos</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidade.registros_preenchidos" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidade.registros_unicos_preenchidos">
+<span class="sig-name descname"><span class="pre">registros_unicos_preenchidos</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidade.registros_unicos_preenchidos" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidade.registros_vazios">
+<span class="sig-name descname"><span class="pre">registros_vazios</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidade.registros_vazios" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidade.tabela_analisada">
+<span class="sig-name descname"><span class="pre">tabela_analisada</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidade.tabela_analisada" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidade.timestamp_inicio">
+<span class="sig-name descname"><span class="pre">timestamp_inicio</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidade.timestamp_inicio" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidade.total_registros">
+<span class="sig-name descname"><span class="pre">total_registros</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidade.total_registros" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadeGeral">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analises_simples.models.</span></span><span class="sig-name descname"><span class="pre">RelatorioUnicidadeGeral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analises_simples/models.html#RelatorioUnicidadeGeral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadeGeral" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Armazena o resultado da análise de Unicidade para UMA TABELA INTEIRA.</p>
+<p class="plantuml">
+<object data="_images/plantuml-f69fd19668b59b12e357741b295d2cff1af41416.svg" type="image/svg+xml" style="width:527px;height:141px;">
+<img src="_images/plantuml-f69fd19668b59b12e357741b295d2cff1af41416.png" alt="class RelatorioUnicidadeGeral {
+  +timestamp_inicio: DateTime
+  +tabela_analisada: CharField
+  +media_unicidade: Float
+  +detalhe_por_coluna: JSONField
+  --
+  +__str__(): str
+}
+
+note right of RelatorioUnicidadeGeral::media_unicidade
+  Calculada pela média ponderada das colunas
+end note"/>
+
+</object></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadeGeral.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadeGeral.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadeGeral.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadeGeral.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadeGeral.detalhe_por_coluna">
+<span class="sig-name descname"><span class="pre">detalhe_por_coluna</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadeGeral.detalhe_por_coluna" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadeGeral.get_next_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_next_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadeGeral.get_next_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadeGeral.get_previous_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_previous_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadeGeral.get_previous_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadeGeral.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadeGeral.id" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadeGeral.media_unicidade">
+<span class="sig-name descname"><span class="pre">media_unicidade</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadeGeral.media_unicidade" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadeGeral.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadeGeral.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadeGeral.qtd_colunas_com_duplicatas">
+<span class="sig-name descname"><span class="pre">qtd_colunas_com_duplicatas</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadeGeral.qtd_colunas_com_duplicatas" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadeGeral.tabela_analisada">
+<span class="sig-name descname"><span class="pre">tabela_analisada</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadeGeral.tabela_analisada" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadeGeral.timestamp_inicio">
+<span class="sig-name descname"><span class="pre">timestamp_inicio</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadeGeral.timestamp_inicio" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadeGeral.total_colunas_analisadas">
+<span class="sig-name descname"><span class="pre">total_colunas_analisadas</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadeGeral.total_colunas_analisadas" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadeGeral.total_registros">
+<span class="sig-name descname"><span class="pre">total_registros</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadeGeral.total_registros" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadePersonalizada">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analises_simples.models.</span></span><span class="sig-name descname"><span class="pre">RelatorioUnicidadePersonalizada</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analises_simples/models.html#RelatorioUnicidadePersonalizada"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadePersonalizada" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Armazena o resultado de uma análise de unicidade feita sob medida
+pelo usuário, combinando múltiplas colunas.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadePersonalizada.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadePersonalizada.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadePersonalizada.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadePersonalizada.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadePersonalizada.colunas_combinadas">
+<span class="sig-name descname"><span class="pre">colunas_combinadas</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadePersonalizada.colunas_combinadas" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadePersonalizada.exemplos_duplicatas">
+<span class="sig-name descname"><span class="pre">exemplos_duplicatas</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadePersonalizada.exemplos_duplicatas" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadePersonalizada.get_next_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_next_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadePersonalizada.get_next_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadePersonalizada.get_previous_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_previous_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadePersonalizada.get_previous_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadePersonalizada.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadePersonalizada.id" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadePersonalizada.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadePersonalizada.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadePersonalizada.percentual_unicidade">
+<span class="sig-name descname"><span class="pre">percentual_unicidade</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadePersonalizada.percentual_unicidade" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadePersonalizada.registros_duplicados">
+<span class="sig-name descname"><span class="pre">registros_duplicados</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadePersonalizada.registros_duplicados" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadePersonalizada.registros_unicos">
+<span class="sig-name descname"><span class="pre">registros_unicos</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadePersonalizada.registros_unicos" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadePersonalizada.tabela_analisada">
+<span class="sig-name descname"><span class="pre">tabela_analisada</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadePersonalizada.tabela_analisada" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadePersonalizada.timestamp_inicio">
+<span class="sig-name descname"><span class="pre">timestamp_inicio</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadePersonalizada.timestamp_inicio" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioUnicidadePersonalizada.total_registros">
+<span class="sig-name descname"><span class="pre">total_registros</span></span><a class="headerlink" href="#analises_simples.models.RelatorioUnicidadePersonalizada.total_registros" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioValidadeFormato">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">analises_simples.models.</span></span><span class="sig-name descname"><span class="pre">RelatorioValidadeFormato</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp_inicio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tabela_analisada</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_celulas_preenchidas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_celulas_invalidas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_celulas_vazias</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentual_validade</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detalhamento_erros</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analises_simples/models.html#RelatorioValidadeFormato"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analises_simples.models.RelatorioValidadeFormato" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioValidadeFormato.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#analises_simples.models.RelatorioValidadeFormato.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioValidadeFormato.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#analises_simples.models.RelatorioValidadeFormato.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioValidadeFormato.detalhamento_erros">
+<span class="sig-name descname"><span class="pre">detalhamento_erros</span></span><a class="headerlink" href="#analises_simples.models.RelatorioValidadeFormato.detalhamento_erros" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioValidadeFormato.get_next_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_next_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analises_simples.models.RelatorioValidadeFormato.get_next_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioValidadeFormato.get_previous_by_timestamp_inicio">
+<span class="sig-name descname"><span class="pre">get_previous_by_timestamp_inicio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp_inicio&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analises_simples.models.RelatorioValidadeFormato.get_previous_by_timestamp_inicio" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioValidadeFormato.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#analises_simples.models.RelatorioValidadeFormato.id" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioValidadeFormato.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#analises_simples.models.RelatorioValidadeFormato.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioValidadeFormato.percentual_validade">
+<span class="sig-name descname"><span class="pre">percentual_validade</span></span><a class="headerlink" href="#analises_simples.models.RelatorioValidadeFormato.percentual_validade" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioValidadeFormato.tabela_analisada">
+<span class="sig-name descname"><span class="pre">tabela_analisada</span></span><a class="headerlink" href="#analises_simples.models.RelatorioValidadeFormato.tabela_analisada" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioValidadeFormato.timestamp_inicio">
+<span class="sig-name descname"><span class="pre">timestamp_inicio</span></span><a class="headerlink" href="#analises_simples.models.RelatorioValidadeFormato.timestamp_inicio" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioValidadeFormato.total_celulas_invalidas">
+<span class="sig-name descname"><span class="pre">total_celulas_invalidas</span></span><a class="headerlink" href="#analises_simples.models.RelatorioValidadeFormato.total_celulas_invalidas" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioValidadeFormato.total_celulas_preenchidas">
+<span class="sig-name descname"><span class="pre">total_celulas_preenchidas</span></span><a class="headerlink" href="#analises_simples.models.RelatorioValidadeFormato.total_celulas_preenchidas" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="analises_simples.models.RelatorioValidadeFormato.total_celulas_vazias">
+<span class="sig-name descname"><span class="pre">total_celulas_vazias</span></span><a class="headerlink" href="#analises_simples.models.RelatorioValidadeFormato.total_celulas_vazias" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-analises_simples.tasks">
+<span id="analises-simples-tasks-module"></span><h2>analises_simples.tasks module<a class="headerlink" href="#module-analises_simples.tasks" title="Link to this heading"></a></h2>
+</section>
+<section id="module-analises_simples.tests">
+<span id="analises-simples-tests-module"></span><h2>analises_simples.tests module<a class="headerlink" href="#module-analises_simples.tests" title="Link to this heading"></a></h2>
+</section>
+<section id="module-analises_simples.urls">
+<span id="analises-simples-urls-module"></span><h2>analises_simples.urls module<a class="headerlink" href="#module-analises_simples.urls" title="Link to this heading"></a></h2>
+</section>
+<section id="module-analises_simples.views">
+<span id="analises-simples-views-module"></span><h2>analises_simples.views module<a class="headerlink" href="#module-analises_simples.views" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="analises_simples.views.configuracao_unicidade">
+<span class="sig-prename descclassname"><span class="pre">analises_simples.views.</span></span><span class="sig-name descname"><span class="pre">configuracao_unicidade</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analises_simples/views.html#configuracao_unicidade"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analises_simples.views.configuracao_unicidade" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="analises_simples.views.dashboard_analises">
+<span class="sig-prename descclassname"><span class="pre">analises_simples.views.</span></span><span class="sig-name descname"><span class="pre">dashboard_analises</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analises_simples/views.html#dashboard_analises"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analises_simples.views.dashboard_analises" title="Link to this definition"></a></dt>
+<dd><p>View principal do Dashboard de Análises.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="analises_simples.views.detalhe_relatorio_geral">
+<span class="sig-prename descclassname"><span class="pre">analises_simples.views.</span></span><span class="sig-name descname"><span class="pre">detalhe_relatorio_geral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analises_simples/views.html#detalhe_relatorio_geral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analises_simples.views.detalhe_relatorio_geral" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="analises_simples.views.detalhe_relatorio_personalizado">
+<span class="sig-prename descclassname"><span class="pre">analises_simples.views.</span></span><span class="sig-name descname"><span class="pre">detalhe_relatorio_personalizado</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analises_simples/views.html#detalhe_relatorio_personalizado"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analises_simples.views.detalhe_relatorio_personalizado" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="analises_simples.views.detalhe_relatorio_regras">
+<span class="sig-prename descclassname"><span class="pre">analises_simples.views.</span></span><span class="sig-name descname"><span class="pre">detalhe_relatorio_regras</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analises_simples/views.html#detalhe_relatorio_regras"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analises_simples.views.detalhe_relatorio_regras" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="analises_simples.views.detalhe_relatorio_unicidade">
+<span class="sig-prename descclassname"><span class="pre">analises_simples.views.</span></span><span class="sig-name descname"><span class="pre">detalhe_relatorio_unicidade</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analises_simples/views.html#detalhe_relatorio_unicidade"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analises_simples.views.detalhe_relatorio_unicidade" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="analises_simples.views.detalhe_relatorio_validade">
+<span class="sig-prename descclassname"><span class="pre">analises_simples.views.</span></span><span class="sig-name descname"><span class="pre">detalhe_relatorio_validade</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analises_simples/views.html#detalhe_relatorio_validade"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#analises_simples.views.detalhe_relatorio_validade" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-analises_simples">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-analises_simples" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="analises_relacionais.migrations.html" class="btn btn-neutral float-left" title="analises_relacionais.migrations package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="analises_simples.logica_de_analise.html" class="btn btn-neutral float-right" title="analises_simples.logica_de_analise package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Sergio Santana dos Santos.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

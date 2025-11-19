@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ titulo }}</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; background-color: #f4f7f6; }
+        .container { max-width: 800px; margin: auto; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .btn { padding: 10px 20px; border: none; border-radius: 5px; color: white; cursor: pointer; font-size: 15px; }
+        .btn-primary { background-color: #007bff; }
+        .btn-success { background-color: #28a745; }
+        .btn-dark { background-color: #343a40; text-decoration: none; display: inline-block; }
+        
+        /* Grid para os checkboxes das colunas */
+        .checkbox-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+            gap: 10px; 
+            margin-top: 15px; 
+            max-height: 400px; 
+            overflow-y: auto; /* Barra de rolagem se tiver muitas colunas */
+            border: 1px solid #eee;
+            padding: 10px;
+        }
+        .checkbox-item { display: flex; align-items: center; }
+        .checkbox-item input { margin-right: 8px; }
+        label { cursor: pointer; font-size: 0.9em; }
+        select { padding: 10px; width: 100%; margin-bottom: 15px; border-radius: 4px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'dashboard_analises' %}" class="btn btn-dark">&larr; Voltar ao Dashboard</a>
+        <h1 style="margin-top: 20px;">{{ titulo }}</h1>
+        <hr>
+
+        {% if messages %}
+            <ul style="color: red; list-style: none; padding: 0;">
+                {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if not tabela_selecionada %}
+            <form method="post">
+                {% csrf_token %}
+                <h3>Passo 1: Escolha a Tabela para Analisar</h3>
+                <p>Selecione a tabela de onde você quer extrair os dados.</p>
+                
+                <select name="tabela_selecionada" required>
+                    <option value="" disabled selected>-- Selecione uma tabela --</option>
+                    {% for tb in tabelas %}
+                        <option value="{{ tb }}">{{ tb }}</option>
+                    {% endfor %}
+                </select>
+                
+                <button type="submit" name="btn_buscar_colunas" class="btn btn-primary">
+                    Carregar Colunas &rarr;
+                </button>
+            </form>
+        {% endif %}
+
+        {% if tabela_selecionada %}
+            <form method="post">
+                {% csrf_token %}
+                <h3>Passo 2: Selecione as Colunas de <code>{{ tabela_selecionada }}</code></h3>
+                <p>Escolha até 5 colunas. O sistema verificará se a <strong>combinação</strong> destes valores é única.</p>
+                
+                <input type="hidden" name="tabela_final" value="{{ tabela_selecionada }}">
+                
+                <div class="checkbox-grid">
+                    {% for col in colunas %}
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="colunas_escolhidas" value="{{ col }}" id="id_{{ col }}">
+                            <label for="id_{{ col }}">{{ col }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background-color: #e9ecef; border-radius: 5px;">
+                    <strong>Exemplo:</strong> Se você selecionar "Nome" e "Departamento", o sistema buscará pessoas com o <em>mesmo nome</em> no <em>mesmo departamento</em>.
+                </div>
+
+                <br>
+                <a href="{% url 'configuracao_unicidade' %}" style="color: #666; margin-right: 15px;">Cancelar / Trocar Tabela</a>
+                <button type="submit" name="btn_executar_analise" class="btn btn-success">
+                    Executar Análise de Unicidade
+                </button>
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html>

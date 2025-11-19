@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>analises_simples.views &mdash; APEX_GOVERNANCE 20/01/2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=e2184e81"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            APEX_GOVERNANCE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">APEX_GOVERNANCE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">analises_simples.views</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for analises_simples.views</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.shortcuts</span><span class="w"> </span><span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib</span><span class="w"> </span><span class="kn">import</span> <span class="n">messages</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.db</span><span class="w"> </span><span class="kn">import</span> <span class="n">connection</span>
+
+<span class="c1"># Importe TODOS os models</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">RelatorioCompletude</span><span class="p">,</span> 
+    <span class="n">RelatorioCompletudeGeral</span><span class="p">,</span> 
+    <span class="n">RelatorioValidadeFormato</span><span class="p">,</span> 
+    <span class="n">RelatorioUnicidadeGeral</span><span class="p">,</span> 
+    <span class="n">RelatorioRegraNegocio</span><span class="p">,</span> 
+    <span class="n">RelatorioUnicidadePersonalizada</span>
+<span class="p">)</span>
+<span class="c1"># Importe TODAS as tasks</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.tasks</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">executar_analise_completude_task</span><span class="p">,</span> 
+    <span class="n">executar_analise_completude_geral_task</span><span class="p">,</span>
+    <span class="n">executar_analise_validade_formato_task</span><span class="p">,</span>
+    <span class="n">executar_analise_unicidade_staging_task</span><span class="p">,</span>
+    <span class="n">executar_analise_unicidade_producao_task</span><span class="p">,</span>
+    <span class="n">executar_regras_staging_task</span><span class="p">,</span>
+    <span class="n">executar_regras_producao_task</span><span class="p">,</span>
+    <span class="n">executar_unicidade_personalizada_task</span>
+<span class="p">)</span>
+
+<div class="viewcode-block" id="dashboard_analises">
+<a class="viewcode-back" href="../../analises_simples.html#analises_simples.views.dashboard_analises">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">dashboard_analises</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View principal do Dashboard de Análises.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;acao_analise_completude_usuarios&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">executar_analise_completude_task</span><span class="o">.</span><span class="n">delay</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;A ANÁLISE DE COMPLETUDE (Usuários) foi iniciada!&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s1">&#39;acao_analise_completude_geral&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">executar_analise_completude_geral_task</span><span class="o">.</span><span class="n">delay</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;A ANÁLISE GERAL DE COMPLETUDE (Staging) foi iniciada!&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s1">&#39;acao_analise_validade&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">executar_analise_validade_formato_task</span><span class="o">.</span><span class="n">delay</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;A ANÁLISE DE VALIDADE DE FORMATO foi iniciada!&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s1">&#39;acao_analise_unicidade_staging&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">executar_analise_unicidade_staging_task</span><span class="o">.</span><span class="n">delay</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;A ANÁLISE DE UNICIDADE (Staging) foi iniciada!&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s1">&#39;acao_analise_unicidade_producao&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">executar_analise_unicidade_producao_task</span><span class="o">.</span><span class="n">delay</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;A ANÁLISE DE UNICIDADE (Produção) foi iniciada!&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s1">&#39;acao_regras_staging&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">executar_regras_staging_task</span><span class="o">.</span><span class="n">delay</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Análise de Regras de Negócio (Staging) iniciada!&#39;</span><span class="p">)</span>            
+        <span class="k">elif</span> <span class="s1">&#39;acao_regras_producao&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">executar_regras_producao_task</span><span class="o">.</span><span class="n">delay</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Análise de Regras de Negócio (Produção) iniciada!&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;dashboard_analises&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Queries de Histórico (Ordenados por Data Descrescente)</span>
+    <span class="n">ultimos_relatorios_usuarios</span> <span class="o">=</span> <span class="n">RelatorioCompletude</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-timestamp_inicio&#39;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">ultimos_relatorios_gerais</span> <span class="o">=</span> <span class="n">RelatorioCompletudeGeral</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-timestamp_inicio&#39;</span><span class="p">)[:</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">ultimos_relatorios_validade</span> <span class="o">=</span> <span class="n">RelatorioValidadeFormato</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-timestamp_inicio&#39;</span><span class="p">)[:</span><span class="mi">4</span><span class="p">]</span>
+    
+    <span class="n">ultimos_relatorios_unicidade_staging</span> <span class="o">=</span> <span class="n">RelatorioUnicidadeGeral</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">tabela_analisada__endswith</span><span class="o">=</span><span class="s1">&#39;_staging&#39;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-timestamp_inicio&#39;</span><span class="p">)[:</span><span class="mi">4</span><span class="p">]</span>
+    
+    <span class="n">ultimos_relatorios_unicidade_producao</span> <span class="o">=</span> <span class="n">RelatorioUnicidadeGeral</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span>
+        <span class="n">tabela_analisada__endswith</span><span class="o">=</span><span class="s1">&#39;_staging&#39;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-timestamp_inicio&#39;</span><span class="p">)[:</span><span class="mi">4</span><span class="p">]</span>
+
+    <span class="n">ultimas_regras_staging</span> <span class="o">=</span> <span class="n">RelatorioRegraNegocio</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">tipo_tabela</span><span class="o">=</span><span class="s1">&#39;STAGING&#39;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-timestamp_inicio&#39;</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]</span>
+    
+    <span class="n">ultimas_regras_producao</span> <span class="o">=</span> <span class="n">RelatorioRegraNegocio</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">tipo_tabela</span><span class="o">=</span><span class="s1">&#39;PRODUÇÃO&#39;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-timestamp_inicio&#39;</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]</span>
+
+    <span class="n">ultimos_relatorios_personalizados</span> <span class="o">=</span> <span class="n">RelatorioUnicidadePersonalizada</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-timestamp_inicio&#39;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;titulo&#39;</span><span class="p">:</span> <span class="s1">&#39;APEX - Dashboard de Análises Simples&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;ultimos_relatorios_usuarios&#39;</span><span class="p">:</span> <span class="n">ultimos_relatorios_usuarios</span><span class="p">,</span> 
+        <span class="s1">&#39;ultimos_relatorios_gerais&#39;</span><span class="p">:</span> <span class="n">ultimos_relatorios_gerais</span><span class="p">,</span>
+        <span class="s1">&#39;ultimos_relatorios_validade&#39;</span><span class="p">:</span> <span class="n">ultimos_relatorios_validade</span><span class="p">,</span>
+        <span class="s1">&#39;ultimos_relatorios_unicidade_staging&#39;</span><span class="p">:</span> <span class="n">ultimos_relatorios_unicidade_staging</span><span class="p">,</span>
+        <span class="s1">&#39;ultimos_relatorios_unicidade_producao&#39;</span><span class="p">:</span> <span class="n">ultimos_relatorios_unicidade_producao</span><span class="p">,</span>
+        <span class="s1">&#39;ultimas_regras_staging&#39;</span><span class="p">:</span> <span class="n">ultimas_regras_staging</span><span class="p">,</span>
+        <span class="s1">&#39;ultimas_regras_producao&#39;</span><span class="p">:</span> <span class="n">ultimas_regras_producao</span><span class="p">,</span>
+        <span class="s1">&#39;ultimos_relatorios_personalizados&#39;</span><span class="p">:</span> <span class="n">ultimos_relatorios_personalizados</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;analises_simples/dashboard_analises.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<span class="c1"># --- Views de Detalhe ---</span>
+
+<div class="viewcode-block" id="detalhe_relatorio_geral">
+<a class="viewcode-back" href="../../analises_simples.html#analises_simples.views.detalhe_relatorio_geral">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">detalhe_relatorio_geral</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+    <span class="n">relatorio</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">RelatorioCompletudeGeral</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    <span class="n">colunas_vazias</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">relatorio</span><span class="o">.</span><span class="n">relatorio_colunas_vazias</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">relatorio</span><span class="o">.</span><span class="n">relatorio_colunas_vazias</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">perc</span> <span class="o">=</span> <span class="p">(</span><span class="n">count</span> <span class="o">/</span> <span class="n">relatorio</span><span class="o">.</span><span class="n">total_registros</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">if</span> <span class="n">relatorio</span><span class="o">.</span><span class="n">total_registros</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">colunas_vazias</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;nome&#39;</span><span class="p">:</span> <span class="n">col</span><span class="p">,</span> <span class="s1">&#39;contagem&#39;</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span> <span class="s1">&#39;percentual&#39;</span><span class="p">:</span> <span class="n">perc</span><span class="p">})</span>
+    
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;titulo&#39;</span><span class="p">:</span> <span class="s1">&#39;Detalhe Geral&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;relatorio&#39;</span><span class="p">:</span> <span class="n">relatorio</span><span class="p">,</span> 
+        <span class="s1">&#39;colunas_vazias&#39;</span><span class="p">:</span> <span class="n">colunas_vazias</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;analises_simples/detalhe_relatorio.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="detalhe_relatorio_validade">
+<a class="viewcode-back" href="../../analises_simples.html#analises_simples.views.detalhe_relatorio_validade">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">detalhe_relatorio_validade</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+    <span class="n">relatorio</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">RelatorioValidadeFormato</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    <span class="n">erros</span> <span class="o">=</span> <span class="n">relatorio</span><span class="o">.</span><span class="n">detalhamento_erros</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">relatorio</span><span class="o">.</span><span class="n">detalhamento_erros</span> <span class="k">else</span> <span class="p">[]</span>
+    
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;titulo&#39;</span><span class="p">:</span> <span class="s1">&#39;Detalhe Validade&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;relatorio&#39;</span><span class="p">:</span> <span class="n">relatorio</span><span class="p">,</span> 
+        <span class="s1">&#39;colunas_com_erros&#39;</span><span class="p">:</span> <span class="n">erros</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;analises_simples/detalhe_relatorio_validade.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="detalhe_relatorio_unicidade">
+<a class="viewcode-back" href="../../analises_simples.html#analises_simples.views.detalhe_relatorio_unicidade">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">detalhe_relatorio_unicidade</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+    <span class="c1"># CORREÇÃO: Agora usa RelatorioUnicidadeGeral, e não precisa de &#39;ultimas_regras&#39;</span>
+    <span class="n">relatorio</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">RelatorioUnicidadeGeral</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    
+    <span class="n">detalhes_colunas</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">relatorio</span><span class="o">.</span><span class="n">detalhe_por_coluna</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">col_nome</span><span class="p">,</span> <span class="n">stats</span> <span class="ow">in</span> <span class="n">relatorio</span><span class="o">.</span><span class="n">detalhe_por_coluna</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">stats</span><span class="p">[</span><span class="s1">&#39;nome&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">col_nome</span>
+            <span class="n">detalhes_colunas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span>
+            
+    <span class="n">detalhes_colunas</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;duplicatas&#39;</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;titulo&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Detalhe Unicidade: </span><span class="si">{</span><span class="n">relatorio</span><span class="o">.</span><span class="n">tabela_analisada</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;relatorio&#39;</span><span class="p">:</span> <span class="n">relatorio</span><span class="p">,</span>
+        <span class="s1">&#39;detalhes_colunas&#39;</span><span class="p">:</span> <span class="n">detalhes_colunas</span>
+        <span class="c1"># Removido &#39;ultimas_regras&#39;, que causava o erro</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;analises_simples/detalhe_relatorio_unicidade.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="detalhe_relatorio_regras">
+<a class="viewcode-back" href="../../analises_simples.html#analises_simples.views.detalhe_relatorio_regras">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">detalhe_relatorio_regras</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+    <span class="n">relatorio</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">RelatorioRegraNegocio</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    <span class="n">status_classe</span> <span class="o">=</span> <span class="s2">&quot;status-sucesso&quot;</span> <span class="k">if</span> <span class="n">relatorio</span><span class="o">.</span><span class="n">qtd_falhas</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;status-falhou&quot;</span>
+    
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;titulo&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Detalhe Regra: </span><span class="si">{</span><span class="n">relatorio</span><span class="o">.</span><span class="n">nome_regra</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;relatorio&#39;</span><span class="p">:</span> <span class="n">relatorio</span><span class="p">,</span>
+        <span class="s1">&#39;status_classe&#39;</span><span class="p">:</span> <span class="n">status_classe</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;analises_simples/detalhe_relatorio_regras.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<span class="c1"># --- View de Configuração Personalizada ---</span>
+
+<div class="viewcode-block" id="configuracao_unicidade">
+<a class="viewcode-back" href="../../analises_simples.html#analises_simples.views.configuracao_unicidade">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">configuracao_unicidade</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">tabelas_disponiveis</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;ad_users_staging&#39;</span><span class="p">,</span> <span class="s1">&#39;ad_computers_staging&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;ad_groups_staging&#39;</span><span class="p">,</span> <span class="s1">&#39;ad_ous_staging&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;ad_users&#39;</span><span class="p">,</span> <span class="s1">&#39;ad_computers&#39;</span><span class="p">,</span> <span class="s1">&#39;ad_groups&#39;</span>
+    <span class="p">]</span>
+    
+    <span class="n">colunas_encontradas</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">tabela_selecionada</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;btn_buscar_colunas&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">tabela_selecionada</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tabela_selecionada&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">tabela_selecionada</span> <span class="ow">in</span> <span class="n">tabelas_disponiveis</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+                    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                        SELECT column_name </span>
+<span class="s2">                        FROM information_schema.columns </span>
+<span class="s2">                        WHERE table_name = &#39;</span><span class="si">{</span><span class="n">tabela_selecionada</span><span class="si">}</span><span class="s2">&#39;</span>
+<span class="s2">                        ORDER BY column_name</span>
+<span class="s2">                    &quot;&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">colunas_encontradas</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;id&#39;</span><span class="p">]</span>
+
+        <span class="k">elif</span> <span class="s1">&#39;btn_executar_analise&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">tabela_final</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tabela_final&#39;</span><span class="p">)</span>
+            <span class="n">colunas_escolhidas</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s1">&#39;colunas_escolhidas&#39;</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">colunas_escolhidas</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">colunas_escolhidas</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
+                <span class="n">executar_unicidade_personalizada_task</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">tabela_final</span><span class="p">,</span> <span class="n">colunas_escolhidas</span><span class="p">)</span>
+                <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Análise Personalizada iniciada para a tabela &#39;</span><span class="si">{</span><span class="n">tabela_final</span><span class="si">}</span><span class="s2">&#39;!&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;dashboard_analises&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Erro: Selecione entre 1 e 5 colunas.&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;configuracao_unicidade&#39;</span><span class="p">)</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;titulo&#39;</span><span class="p">:</span> <span class="s1">&#39;Nova Análise de Unicidade&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;tabelas&#39;</span><span class="p">:</span> <span class="n">tabelas_disponiveis</span><span class="p">,</span>
+        <span class="s1">&#39;tabela_selecionada&#39;</span><span class="p">:</span> <span class="n">tabela_selecionada</span><span class="p">,</span>
+        <span class="s1">&#39;colunas&#39;</span><span class="p">:</span> <span class="n">colunas_encontradas</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;analises_simples/configuracao_unicidade.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="detalhe_relatorio_personalizado">
+<a class="viewcode-back" href="../../analises_simples.html#analises_simples.views.detalhe_relatorio_personalizado">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">detalhe_relatorio_personalizado</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+    <span class="n">relatorio</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">RelatorioUnicidadePersonalizada</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;titulo&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Resultado: Unicidade Personalizada&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;relatorio&#39;</span><span class="p">:</span> <span class="n">relatorio</span><span class="p">,</span>
+        <span class="s1">&#39;exemplos&#39;</span><span class="p">:</span> <span class="n">relatorio</span><span class="o">.</span><span class="n">exemplos_duplicatas</span> 
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;analises_simples/detalhe_relatorio_personalizado.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Sergio Santana dos Santos.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
