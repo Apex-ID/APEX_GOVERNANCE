@@ -6,19 +6,63 @@
     <style>
         body { font-family: sans-serif; margin: 40px; background-color: #f4f7f6; }
         .container { max-width: 1000px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 8px; }
-        .btn { display: block; width: 100%; color: white; padding: 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; background-color: #fd7e14; } /* Laranja */
+        
+        /* Botões */
+        .btn { display: block; width: 100%; color: white; padding: 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; background-color: #6610f2; transition: 0.3s; }
         .btn:hover { opacity: 0.9; }
         .btn-dark { background-color: #343a40; text-decoration: none; display: inline-block; width: auto; padding: 10px 20px; color: white; border-radius: 5px; }
+        .btn-dark:hover { background-color: #23272b; }
         
+        /* Cards de Histórico */
+        .link-card { text-decoration: none; color: inherit; display: block; }
         .relatorio-metricas { border: 1px solid #e0e0e0; border-radius: 5px; margin-bottom: 15px; padding: 15px; background: #fff; text-decoration: none; color: inherit; display: block; transition: transform 0.2s; }
         .relatorio-metricas:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-color: #bbb; }
         
+        /* Status Colors */
         .status-sucesso { color: #28a745; font-weight: bold; }
         .status-falhou { color: #dc3545; font-weight: bold; }
-        .meta-info { font-size: 0.85em; color: #666; margin-bottom: 5px; }
         
+        .meta-info { font-size: 0.85em; color: #666; margin-bottom: 5px; }
         .messages { list-style: none; padding: 0; margin-bottom: 20px; }
         .messages li { padding: 15px; border-radius: 5px; margin-bottom: 10px; background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+
+        /* Estilos dos KPIs (DQI e Risco) */
+        .kpi-container { 
+            display: flex; 
+            gap: 20px; 
+            margin-bottom: 30px; 
+            flex-wrap: wrap; 
+        }
+        .kpi-card { 
+            flex: 1; 
+            min-width: 300px; 
+            background: #fff; 
+            padding: 20px; 
+            border-radius: 8px; 
+            border: 1px solid #ddd; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+        }
+        .dqi-value { font-size: 4em; font-weight: bold; margin: 10px 0; }
+        
+        /* Barras de Progresso */
+        .bar-container { 
+            display: flex; 
+            height: 30px; 
+            width: 100%; 
+            border-radius: 15px; 
+            overflow: hidden; 
+            background-color: #eee; 
+            margin-top: 10px; 
+        }
+
+        .bar-container .bar { height: 100%; }
+
+        .bar-container .verde   { background: #28a745; }
+        .bar-container .amarela { background: #ffc107; }
+        .bar-container .laranja { background: #fd7e14; }
+        .bar-container .vermelha{ background: #dc3545; }
+
+        .legendas { display: flex; justify-content: space-between; font-size: 0.85em; margin-top: 8px; color: #666; }
     </style>
 </head>
 <body>
@@ -39,32 +83,100 @@
             </ul>
         {% endif %}
 
-        <p>Este painel executa regras de negócio complexas que cruzam dados entre tabelas para verificar a integridade e consistência do Active Directory.</p>
+        <div class="kpi-container">
+            
+            <div class="kpi-card" style="text-align: center;">
+                <h3 style="margin:0; color:#555;">DQI - Índice de Qualidade</h3>
+                
+                {% if dqi %}
+                    <div class="dqi-value" style="color: {{ dqi.cor_status }};">
+                        {{ dqi.score_total|floatformat:'1' }}
+                    </div>
+                    <p style="color: gray; font-size: 0.9em; margin: 0;">
+                        Comp: {{ dqi.score_completude|floatformat:'0' }} | 
+                        Valid: {{ dqi.score_validade|floatformat:'0' }} |
+                        Unic: {{ dqi.score_unicidade|floatformat:'0' }} |
+                        Consist: {{ dqi.score_consistencia|floatformat:'0' }}
+                    </p>
+                {% else %}
+                    <p style="margin-top: 30px; color: #999;">Execute a análise para calcular.</p>
+                {% endif %}
+            </div>
+
+            <div class="kpi-card">
+                <h3 style="margin:0 0 10px 0; color:#555; text-align:center;">Risco: Idade das Senhas</h3>
+
+                {% if risco_senha and risco_senha.total_contas > 0 %}
+                    
+                    <div class="bar-container">
+
+                        <div class="bar verde"
+                             style="width: {{ risco_senha.perc_verde|floatformat:'1' }}%;"
+                             title="&lt; 90 dias: {{ risco_senha.faixa_verde_90dias }}">
+                        </div>
+
+                        <div class="bar amarela"
+                             style="width: {{ risco_senha.perc_amarela|floatformat:'1' }}%;"
+                             title="90-180 dias: {{ risco_senha.faixa_amarela_180dias }}">
+                        </div>
+
+                        <div class="bar laranja"
+                             style="width: {{ risco_senha.perc_vermelha|floatformat:'1' }}%;"
+                             title="180 dias - 1 ano: {{ risco_senha.faixa_vermelha_1ano }}">
+                        </div>
+
+                        <div class="bar vermelha"
+                             style="width: {{ risco_senha.perc_critica|floatformat:'1' }}%;"
+                             title="&gt; 1 ano: {{ risco_senha.faixa_critica_velha }}">
+                        </div>
+
+                    </div>
+
+                    <div class="legendas">
+                        <span>Seguro: <strong>{{ risco_senha.faixa_verde_90dias }}</strong></span>
+                        <span style="color: #dc3545;">Crítico (&gt;1 ano): <strong>{{ risco_senha.faixa_critica_velha }}</strong></span>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 5px; font-size: 0.8em; color: #999;">
+                        Total de Contas Ativas: {{ risco_senha.total_contas }}
+                    </div>
+
+                {% else %}
+                    <p style="text-align: center; margin-top: 30px; color: #999;">Sem dados de senha ou análise não executada.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <p style="margin-bottom: 15px;">
+            Este painel executa <strong>18 regras de negócio complexas</strong>, calcula o risco de senhas e gera o DQI (Data Quality Index) oficial.
+        </p>
         
         <form method="post">
             {% csrf_token %}
             <button type="submit" name="acao_analise_consistencia" class="btn">
-                Executar Auditoria de Regras Relacionais
+                Executar Auditoria Completa (Regras + DQI + Riscos)
             </button>
         </form>
 
-        <h2 style="margin-top: 30px;">Resultados da Auditoria</h2>
+        <h2 style="margin-top: 40px;">Histórico de Regras (Detalhado)</h2>
         
         {% for rel in ultimos_relatorios %}
-            <a href="{% url 'detalhe_relatorio_relacional' pk=rel.id %}" class="relatorio-metricas">
-                <div class="meta-info">{{ rel.tabelas_envolvidas }} • {{ rel.timestamp_inicio }}</div>
-                <div style="font-size: 1.1em; margin-bottom: 5px;"><strong>{{ rel.nome_analise }}</strong></div>
-                
-                <div>
-                    Conformidade: 
-                    <span class="{% if rel.percentual_consistencia == 100 %}status-sucesso{% else %}status-falhou{% endif %}">
-                        {{ rel.percentual_consistencia|floatformat:2 }}%
-                    </span>
-                    &nbsp;|&nbsp;
-                    Inconsistências: <strong>{{ rel.total_inconsistencias }}</strong>
-                </div>
-                <div style="margin-top: 8px; font-size: 0.9em; color: #555;">
-                    {{ rel.descricao_impacto|truncatechars:100 }}
+            <a href="{% url 'detalhe_relatorio_relacional' pk=rel.id %}" class="link-card">
+                <div class="relatorio-metricas">
+                    <div class="meta-info">{{ rel.tabelas_envolvidas }} • {{ rel.timestamp_inicio }}</div>
+                    <div style="font-size: 1.1em; margin-bottom: 5px;"><strong>{{ rel.nome_analise }}</strong></div>
+                    
+                    <div>
+                        Conformidade: 
+                        <span class="{% if rel.percentual_consistencia == 100 %}status-sucesso{% else %}status-falhou{% endif %}">
+                            {{ rel.percentual_consistencia|floatformat:2 }}%
+                        </span>
+                        &nbsp;|&nbsp;
+                        Inconsistências: <strong>{{ rel.total_inconsistencias }}</strong>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 0.9em; color: #555;">
+                        {{ rel.descricao_impacto|truncatechars:100 }}
+                    </div>
                 </div>
             </a>
         {% empty %}
